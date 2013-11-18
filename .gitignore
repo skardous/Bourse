@@ -1,4 +1,6 @@
 build
 .settings
 .project
+.idea
 .classpath
+Bourse.iml
