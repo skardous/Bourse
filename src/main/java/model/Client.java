@@ -1,8 +1,12 @@
 package model;
 
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 import javax.persistence.*;
 
 @Entity(name = "Client")
+@ManagedBean
+@SessionScoped
 public class Client {
     @Id
     @GeneratedValue

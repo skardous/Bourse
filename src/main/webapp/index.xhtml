@@ -1,0 +1,28 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<title>Bourse</title>
+	<h:outputStylesheet library="css" name="default.css" />
+</h:head>
+
+<h:body>
+	<h:form>
+		<p:panel header="Créer un Client">
+			<h:outputText value="Prénom : "></h:outputText>
+			<p:inputText id="clientName" value="#{client.name}" required="true"
+				requiredMessage="Entrez votre prénom" message="fc">
+				<f:validateLength minimum="1" />
+			</p:inputText>
+			<h:outputText value="Nom : "></h:outputText>
+			<p:inputText id="clientLastName" value="#{client.lastName}"
+				required="true" requiredMessage="Entrez votre nom" message="fc">
+				<f:validateLength minimum="1" />
+			</p:inputText>
+		</p:panel>
+		<p:commandButton value="Submit" />
+	</h:form>
+</h:body>
+</html>
