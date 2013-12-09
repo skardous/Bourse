@@ -1,6 +1,11 @@
 package Controller;
 
+
+import java.io.IOException;
+
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.context.FacesContext;
 import javax.persistence.Entity;
 
 @Entity(name = "LoginController")
@@ -9,9 +14,15 @@ public class LoginController {
 	private String username;
 	private String password;
 	
-	public String login() {
+	public void login() {
 		System.out.println("username : "+username);
-		return "/index.xhtml";
+		
+		try {
+			FacesContext.getCurrentInstance().getExternalContext().redirect("list/societeList.xhtml");
+		} catch (IOException e) {			
+			e.printStackTrace();
+		}
+		
 	}
 
 	public String getUsername() {

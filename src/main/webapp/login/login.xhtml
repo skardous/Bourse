@@ -16,11 +16,11 @@
                 </f:facet>
                 <h:outputText value="Utilisateur : "></h:outputText>
                 <p:inputText id="username" value="#{loginController.username}" required="true" requiredMessage="Entrez votre nom d'utilisateur" message="fc">
-                    <f:validateLength minimum="1" />  
+                    
                 </p:inputText>
                 <h:outputText value="Mot de passe : "></h:outputText>
                 <p:password id="password" value="#{loginController.password}" required="true" requiredMessage="Entrez votre mot de passe">
-                    <f:validateLength minimum="1" />  
+                    
                 </p:password>
                 <f:facet name="footer">
                 <p:commandButton value="Submit" actionListener="#{loginController.login}" type="submit" icon="ui-icon-check" style="margin:0"></p:commandButton>
