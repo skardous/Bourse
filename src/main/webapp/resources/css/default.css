@@ -1,8 +1,24 @@
+.loginPanelStyle {
+	margin-left: auto;
+	margin-right: auto;
+	width: 300px;
+	margin-top: 15%;
+}
 
- .loginPanelStyle{
-    margin-left: auto;
-    margin-right: auto;
-    width: 300px;
-    margin-top: 15%;
- }
- 
+.ui-widget,.ui-widget .ui-widget {
+	font-size: 90% !important;
+}
+
+.ui-datatable .ui-button {
+	float: left;
+}
+
+.clientDataTableStyle {
+	margin-left: 5px;
+	margin-right: 5px;
+	margin-top: 0;
+}
+
+.ui-layout-unit .ui-layout-unit-content {
+	overflow : visible !important;
+}

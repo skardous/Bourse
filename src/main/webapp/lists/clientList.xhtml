@@ -1,0 +1,28 @@
+<ui:composition template="/templates/layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	<ui:define name="content">
+		<p:dataTable id="dataTable" var="client"
+			value="#{clientController.clientsList}" sortMode="multiple" rows="25"
+			paginator="true">
+			<f:facet name="header">  
+            Liste des Clients  
+        </f:facet>
+
+			<p:column sortBy="name" headerText="Name">
+				<h:outputText value="#{client.name}" />
+			</p:column>
+
+			<p:column sortBy="lastName" headerText="lastName">
+				<h:outputText value="#{client.lastName}" />
+			</p:column>
+
+
+		</p:dataTable>
+		<p:growl id="growl" showDetail="true" life="5000" />
+
+	</ui:define>
+</ui:composition>

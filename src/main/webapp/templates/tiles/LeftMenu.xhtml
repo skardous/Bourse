@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+<h:head>
+	<title>Title</title>
+</h:head>
+<h:body>
+	<h:form style="overflow:visible">
+		<p:growl id="messages" />
+		<p:tieredMenu style="width:95%">
+			<p:menuitem value="Accueil" action="/index.xhtml" ajax="false"
+				icon="ui-icon-home" />
+			<c:if test="#{sessionController.session.connectedUser.isAdmin()}">
+				<p:menuitem value="Liste des utilisateurs"
+					action="/lists/clientList.xhtml?faces-redirect=true" ajax="false"
+					icon="ui-icon-person" />
+			</c:if>
+			<c:if test="#{sessionController.session.connectedUser != null}">
+				<p:menuitem value="Liste des sociétés"
+					action="/stockEx/stockEx.xhtml?faces-redirect=true"
+					icon="ui-icon-power" />
+				<p:menuitem value="Mon compte"
+					action="/account/account.xhtml?faces-redirect=true"
+					icon="ui-icon-power" />
+				<p:menuitem value="Se déconnecter"
+					action="#{sessionController.session.logout}" icon="ui-icon-power" />
+				<p:submenu label="Gérer le portefeuille" icon="ui-icon-refresh">
+					<p:menuitem value="Aperçu global" action="/wallet/walletGlobal.xhtml?faces-redirect=true"
+						icon="ui-icon-arrowrefresh-1-w" />
+					<p:submenu label="Passer un ordre" icon="ui-icon-refresh">
+						<p:menuitem value="Achat" action="/wallet/orderBuy.xhtml?faces-redirect=true"
+						icon="ui-icon-arrowrefresh-1-w" />
+						<p:menuitem value="Vente" action="/wallet/orderSell.xhtml?faces-redirect=true"
+						icon="ui-icon-arrowrefresh-1-w" />
+					</p:submenu>
+				</p:submenu>
+			</c:if>
+			<c:if test="#{sessionController.session.connectedUser == null}">
+				<p:menuitem value="Se connecter"
+					action="/login/login.xhtml?faces-redirect=true"
+					icon="ui-icon-power" />
+				<p:menuitem value="Créer un compte"
+					action="/login/newAccount.xhtml?faces-redirect=true"
+					icon="ui-icon-power" />
+			</c:if>
+		</p:tieredMenu>
+	</h:form>
+</h:body>
+</html>

@@ -1,0 +1,91 @@
+<ui:composition template="/templates/layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="content">
+		<h:form id="form">
+
+			<p:growl id="msgs" showDetail="true" />
+
+			<p:panel header="Selectionnez une bourse" style="margin-bottom:10px;">
+				<h:panelGrid columns="2" cellpadding="5">
+					<p:selectOneMenu id="city" value="#{stockExController.selectedSE}">
+						<f:selectItem itemLabel="Selectionnez une bourse" itemValue="" />
+						<f:selectItems value="#{stockExController.listSE}" />
+						<p:ajax update="companyTable"
+							listener="#{stockExController.selectSE}" />
+					</p:selectOneMenu>
+				</h:panelGrid>
+			</p:panel>
+
+			<p:panel header="Liste des sociétés" style="margin-bottom:10px;">
+				<p:dataTable id="companyTable" var="societe"
+					value="#{stockExController.companyList}" sortMode="multiple"
+					rows="25" paginator="true">
+
+					<p:column sortBy="code" headerText="Code">
+<!-- 						<h:outputText value="#{societe.code}" /> -->
+						<p:commandLink value="#{societe.code}"
+							update=":companyHistory" oncomplete="historyDialog.show()"
+							title="View">
+							<f:setPropertyActionListener value="#{societe}"
+								target="#{stockExController.selectedCompany}" />
+						</p:commandLink>
+					</p:column>
+
+					<p:column sortBy="nom" headerText="Nom">
+						<h:outputText value="#{societe.nom}" />
+					</p:column>
+
+					<p:column sortBy="valeur" headerText="Valeur">
+						<h:outputText value="#{societe.valeur}" />
+					</p:column>
+
+<!-- 					<p:column> -->
+<!-- 						<p:commandButton value="Historique" -->
+<!-- 							oncomplete="historyDialog.show()" -->
+<!-- 							update=":companyHistory:display" id="btnSubmit" /> -->
+<!-- 					</p:column> -->
+
+				</p:dataTable>
+			</p:panel>
+
+		</h:form>
+
+		<p:dialog header="Historique" widgetVar="historyDialog"
+			resizable="false" id="histoDlg">
+			<p:dataTable id="companyHistory" var="historique"
+				value="#{stockExController.selectedHistorique}" sortMode="multiple"
+				rows="25" paginator="true">
+
+				<p:column sortBy="date" headerText="Date">
+					<h:outputText value="#{historique.date}" />
+				</p:column>
+
+				<p:column sortBy="ouverture" headerText="Ouverture">
+					<h:outputText value="#{historique.ouverture}" />
+				</p:column>
+
+				<p:column sortBy="plus_bas" headerText="Plus bas">
+					<h:outputText value="#{historique.plus_bas}" />
+				</p:column>
+				
+				<p:column sortBy="plus_haut" headerText="Plus haut">
+					<h:outputText value="#{historique.plus_haut}" />
+				</p:column>
+				
+				<p:column sortBy="fermeture" headerText="Fermeture">
+					<h:outputText value="#{historique.fermeture}" />
+				</p:column>
+				
+				<p:column sortBy="volume" headerText="Volume">
+					<h:outputText value="#{historique.volume}" />
+				</p:column>
+
+			</p:dataTable>
+		</p:dialog>
+	</ui:define>
+</ui:composition>

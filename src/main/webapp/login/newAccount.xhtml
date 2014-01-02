@@ -1,0 +1,46 @@
+<ui:composition template="/templates/layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="content">
+		<p:panel header="Créer un compte">
+			<h:form>
+				<p:growl id="msgs" showDetail="true" sticky="false" />
+				<p:panelGrid columns="2">
+					<f:facet name="header">
+                    Facet
+                </f:facet>
+					<h:outputText value="Prénom : "></h:outputText>
+					<p:inputText value="#{clientController.client.name}"
+						required="true" requiredMessage="Entrez un prénom!" message="fc">
+						<f:validateLength minimum="1" />
+					</p:inputText>
+					<h:outputText value="Nom : "></h:outputText>
+					<p:inputText value="#{clientController.client.lastName}"
+						required="true" requiredMessage="Entrez un nom!" message="fc">
+						<f:validateLength minimum="1" />
+					</p:inputText>
+					<h:outputText value="Login : "></h:outputText>
+					<p:inputText value="#{clientController.client.username}"
+						required="true" requiredMessage="Entrez un login!" message="fc">
+						<f:validateLength minimum="1" />
+					</p:inputText>
+					<h:outputText value="Mot de passe : "></h:outputText>
+					<p:password value="#{clientController.client.password}"
+						required="true" requiredMessage="Entrez un mot de passe!"
+						message="fc">
+						<f:validateLength minimum="1" />
+					</p:password>
+					<f:facet name="footer">
+						<p:commandButton value="Submit" update="msgs"
+							actionListener="#{clientController.createclient}" type="submit"
+							icon="ui-icon-check" style="margin:0"></p:commandButton>
+					</f:facet>
+				</p:panelGrid>
+			</h:form>
+		</p:panel>
+	</ui:define>
+</ui:composition>

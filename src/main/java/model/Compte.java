@@ -1,6 +1,8 @@
 package model;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 
 /**
  * Created with IntelliJ IDEA.
@@ -11,7 +13,14 @@ import javax.persistence.Entity;
  */
 @Entity(name = "Compte")
 public class Compte {
+	@Id
+    @GeneratedValue
+    private int id;
     private float solde;
+    
+    public Compte() {
+    	this.solde = 0;
+    }
 
     public float getSolde() {
         return solde;

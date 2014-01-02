@@ -1,49 +1,67 @@
 package model;
 
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+import java.io.Serializable;
+
 import javax.persistence.*;
 
-@Entity(name = "Client")
-@ManagedBean
-@SessionScoped
-public class Client {
-    @Id
-    @GeneratedValue
-    private int id;
-    private String name;
-    private String lastName;
-    private String password;
-    @OneToOne
-    private Portefeuille portefeuille;
-    @OneToOne
-    private Compte compte;
+@Entity
+@NamedQueries({
+		@NamedQuery(name = Client.ALL, query = "SELECT c FROM Client c "),
+		@NamedQuery(name = Client.TOTAL, query = "SELECT COUNT(c) FROM Client c") })
+public class Client extends Utilisateur implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
-    public String getName() {
-        return name;
-    }
+	private String name;
+	private String lastName;
+	@OneToOne(cascade=CascadeType.ALL)
+	private Portefeuille portefeuille;
+	@OneToOne(cascade=CascadeType.ALL)
+	private Compte compte;
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public final static String ALL = "Client.populateClients";
+	public final static String TOTAL = "Client.countClientsTotal";
 
-    public String getLastName() {
-        return lastName;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public String getPassword() {
-        return password;
-    }
+	public String getLastName() {
+		return lastName;
+	}
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
 
-    public int getId() {
-        return id;
-    }
+	public Portefeuille getPortefeuille() {
+		return portefeuille;
+	}
+
+	public void setPortefeuille(Portefeuille portefeuille) {
+		this.portefeuille = portefeuille;
+	}
+
+	public Compte getCompte() {
+		return compte;
+	}
+
+	public void setCompte(Compte compte) {
+		this.compte = compte;
+	}
+
+	@Override
+	public String toString() {
+		return "Client [name=" + name + ", lastName=" + lastName
+				+ ", portefeuille=" + portefeuille + ", compte=" + compte
+				+ ", id=" + id + ", username=" + username + ", password="
+				+ password + "]";
+	}
+
 }
