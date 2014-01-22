@@ -19,19 +19,21 @@ import java.util.List;
 
 @Entity
 @NamedQueries({
-	  @NamedQuery(name=Bourse.findAllSE,
+	  @NamedQuery(name=Bourse.findSEByName,
 	              query="SELECT b " +
-	                    "FROM Bourse b ")
+	                    "FROM Bourse b " +
+	            		"WHERE b.nom = :name")
 	})
 public class Bourse {
 
-	public final static String findAllSE = "Bourse.findallse";
+	public final static String findSEByName = "Bourse.findsebyname";
 	
     @Id
     @GeneratedValue
     private int id;
 
     private String nom;
+    
     @OneToMany(mappedBy="bourse")
     private List<Societe> societes;
     

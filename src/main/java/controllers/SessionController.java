@@ -11,8 +11,8 @@ import javax.faces.context.FacesContext;
 
 import org.omg.CORBA.UnknownUserException;
 
-import utils.CSVRequests;
 import ejb.SessionBean;
+import ejb.utils.CSVRequests;
 
 @ManagedBean
 @SessionScoped
@@ -28,6 +28,9 @@ public class SessionController implements Serializable {
 	 */
 	@EJB
 	private SessionBean session;
+	
+	@EJB
+	private CSVRequests requester;
 
 	private String username;
 	private String password;
@@ -37,7 +40,7 @@ public class SessionController implements Serializable {
 			session.login(username, password);
 			FacesContext.getCurrentInstance().getExternalContext()
 			.redirect("/Bourse/index.xhtml");
-			CSVRequests.updateDatabase();
+			//requester.updateDatabase();
 		} catch (UnknownUserException e) {
 			FacesContext.getCurrentInstance().addMessage(null,
 					new FacesMessage("utilisateur inconnu"));

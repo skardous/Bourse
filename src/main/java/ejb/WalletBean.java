@@ -11,16 +11,33 @@ import javax.ejb.Stateful;
 
 import org.omg.CORBA.UnknownUserException;
 
+import ejb.utils.CSVRequests;
 import model.Action;
+import model.Compte;
 import model.Portefeuille;
 import model.Societe;
+import model.Speculation;
+import service.AccountService;
+import service.CompanyService;
+import service.SEService;
+import service.ShareService;
+import service.SpeculationService;
 import service.WalletService;
-import utils.CSVRequests;
+import util.NegativeActionNumberException;
+import util.NegativeSoldException;
 
+/**
+ * @author Simon KARDOUS
+ * 
+ *         Bean de gestion du portefeuille : appelle les services réalisant la
+ *         persistance
+ */
 @Stateful
 public class WalletBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
+	
+	private static double COMMISSION = 0.5/100;
 
 	/**
 	 * EJB d'accès à la persistance
@@ -28,33 +45,95 @@ public class WalletBean implements Serializable {
 	@EJB
 	private WalletService service;
 
-	public void orderBuy(Portefeuille p, String code, String se, int number) throws UnknownObjectException, MalformedURLException, IOException {
-		CSVRequests req = new CSVRequests();
-		List<Societe> list = req.getCompaniesBySE(se);
-		if (list.isEmpty()) {
-			throw new UnknownObjectException("Nom de bourse incorrect ou données irrécupérables");
-		}
-		Societe societe = null;
-		for (Societe s : list) {
-			if (s.getCode().equals(code)) {
-				societe = s;
+	@EJB
+	private CompanyService compService;
+
+	@EJB
+	private AccountBean accService;
+
+	@EJB
+	private ShareService shareService;
+	
+	@EJB
+	private SpeculationService specService;
+
+	/**
+	 * Méthode appelant les différents services pour réaliser un achat
+	 * d'actions.
+	 * 
+	 * @param p
+	 *            Portefeuille du client
+	 * @param code
+	 * @param number
+	 * @param cpt
+	 * @throws UnknownObjectException
+	 * @throws MalformedURLException
+	 * @throws IOException
+	 * @throws NegativeSoldException
+	 *             Le solde du compte courant n'est pas suffisant pour réaliser
+	 *             l'achat
+	 */
+	public void orderBuy(Portefeuille p, String code, int number, Compte cpt)
+			throws UnknownObjectException, MalformedURLException, IOException,
+			NegativeSoldException {
+
+		Societe c = compService.findCompanyByCode(code);
+
+		accService.debiter(cpt, Double.parseDouble(c.getValeur()) * number);
+		accService.debiter(cpt, (COMMISSION * Double.parseDouble(c.getValeur())) * number);
+
+		boolean alreadyOwner = false;
+		for (Action a : p.getActions()) {
+			if (a.getSociete().getCode().equals(code)) {
+				alreadyOwner = true;
+				a.setNumber(a.getNumber() + number);
+				shareService.update(a);
 			}
 		}
-		if (societe == null) {
-			throw new UnknownObjectException("code incorrect");
+		if (!alreadyOwner) {
+			Action a = new Action(number, c, p);
+			p.getActions().add(a);
 		}
-		
-		Action a = new Action(Float.parseFloat(societe.getValeur()), societe, p);
-		for (int i = 0; i < number; i++) {
-			p.getActions().add(a);			
-		}
+
 		service.update(p);
 	}
-	
-	public void orderSell(Portefeuille p, String code, int number) {
-//		c.debiter(montant);
-//		service.update(c);
+
+	/**
+	 * @param p
+	 * @param share
+	 * @param number
+	 * @param cpt	Compte qui sera débité
+	 * @throws NegativeActionNumberException
+	 * @throws NegativeSoldException 
+	 */
+	public void orderSale(Portefeuille p, Action share, int number, Compte cpt)
+			throws NegativeActionNumberException, NegativeSoldException {
+		Action s = p.getActions().get(p.getActions().indexOf(share));
+		s.sell(number);
+		if (s.getNumber() == 0) {
+			p.getActions().remove(s);
+			shareService.delete(s.getSociete().getCode());
+		} else {
+			shareService.update(s);
+		}
+		service.update(p);
+		accService.crediter(cpt, Double.parseDouble(s.getSociete().getValeur())
+				* number);
+		accService.debiter(cpt, (COMMISSION * Double.parseDouble(s.getSociete().getValeur())) * number);
 	}
+
+	public void orderSpeculativeSale(Portefeuille p,
+			String code, int number, Compte cpt) throws NumberFormatException, NegativeSoldException {
+		Societe c = compService.findCompanyByCode(code);
+		
+		accService.debiter(cpt, (COMMISSION * Double.parseDouble(c.getValeur())) * number);
+		Speculation s = new Speculation(number,Double.parseDouble(c.getValeur()), c, p);
+		p.getSpectulations().add(s);		
+
+		service.update(p);	
+		
+	}
+
 	
 
 }

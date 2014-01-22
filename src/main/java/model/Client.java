@@ -20,6 +20,8 @@ public class Client extends Utilisateur implements Serializable {
 	private Portefeuille portefeuille;
 	@OneToOne(cascade=CascadeType.ALL)
 	private Compte compte;
+	
+	private Confiance confiance;
 
 	public final static String ALL = "Client.populateClients";
 	public final static String TOTAL = "Client.countClientsTotal";
@@ -62,6 +64,14 @@ public class Client extends Utilisateur implements Serializable {
 				+ ", portefeuille=" + portefeuille + ", compte=" + compte
 				+ ", id=" + id + ", username=" + username + ", password="
 				+ password + "]";
+	}
+
+	public Confiance getConfiance() {
+		return confiance;
+	}
+
+	public void setConfiance(Confiance confiance) {
+		this.confiance = confiance;
 	}
 
 }

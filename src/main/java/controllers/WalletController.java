@@ -6,17 +6,19 @@ import java.net.MalformedURLException;
 import java.rmi.activation.UnknownObjectException;
 
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
-import ejb.AccountBean;
-import ejb.WalletBean;
-import service.AccountService;
+import util.NegativeActionNumberException;
+import util.NegativeSoldException;
+import model.Action;
 import model.Compte;
 import model.Portefeuille;
+import model.Speculation;
+import ejb.WalletBean;
 
 @ManagedBean
 @ViewScoped
@@ -26,24 +28,62 @@ public class WalletController implements Serializable {
 
 	@ManagedProperty(value = "#{sessionController.session.connectedUser.portefeuille}")
 	private Portefeuille wallet;
-	
+
+	@ManagedProperty(value = "#{sessionController.session.connectedUser.compte}")
+	private Compte compte;
+
 	@EJB
 	private WalletBean bean;
-	
+
 	private String orderCompanyCode;
-	private String orderCompanySE;
 	private int orderNumber;
-
-	public Portefeuille getWallet() {
-		return wallet;
-	}
-
-	public void setWallet(Portefeuille wallet) {
-		this.wallet = wallet;
-	}
+	private Action selectedShare;
 	
-	public void orderBuy() throws UnknownObjectException, MalformedURLException, IOException {
-		bean.orderBuy(wallet, orderCompanyCode, orderCompanySE, orderNumber);
+
+
+	public void orderBuy() throws UnknownObjectException,
+			MalformedURLException, IOException {
+		try {
+			bean.orderBuy(wallet, orderCompanyCode, orderNumber, compte);
+			FacesContext.getCurrentInstance().getExternalContext()
+			.redirect("/Bourse/wallet/walletGlobal.xhtml");
+		} catch (NegativeSoldException e) {
+			FacesContext.getCurrentInstance().addMessage(null,
+					new FacesMessage("Vous n'avez pas assez d'argent"));
+		}
+	}
+
+	public void orderSale() throws IOException {
+		try {
+			bean.orderSale(wallet, selectedShare, orderNumber, compte);
+			FacesContext.getCurrentInstance().getExternalContext()
+			.redirect("/Bourse/wallet/orderSell.xhtml");
+		} catch (NegativeActionNumberException e) {
+			FacesContext.getCurrentInstance().addMessage(null,
+					new FacesMessage("Vous ne possédez pas un tel nombre d'actions !!"));
+		} catch (NegativeSoldException e) {
+			FacesContext.getCurrentInstance().addMessage(null,
+					new FacesMessage("Vous n'avez pas assez d'argent (commission bancaire)"));
+		}		
+	} 
+	
+	public void orderSpeculativeSale() throws IOException {
+		try {
+			bean.orderSpeculativeSale(wallet, orderCompanyCode,  orderNumber, compte);
+			FacesContext.getCurrentInstance().getExternalContext()
+			.redirect("/Bourse/wallet/orderBuy.xhtml");
+		} catch (NegativeSoldException e) { 
+			FacesContext.getCurrentInstance().addMessage(null,
+					new FacesMessage("Vous n'avez pas assez d'argent (commission bancaire)"));
+		}		
+	} 
+	
+	public String getObligationsTotal() {
+		double total = 0;
+		for (Speculation s : wallet.getSpectulations()) {
+			total += s.getTotalValue() - s.getGains();
+		}
+		return String.valueOf(total);
 	}
 
 	public String getOrderCompanyCode() {
@@ -54,14 +94,6 @@ public class WalletController implements Serializable {
 		this.orderCompanyCode = orderCompanyCode;
 	}
 
-	public String getOrderCompanySE() {
-		return orderCompanySE;
-	}
-
-	public void setOrderCompanySE(String orderCompanySE) {
-		this.orderCompanySE = orderCompanySE;
-	}
-
 	public int getOrderNumber() {
 		return orderNumber;
 	}
@@ -70,4 +102,27 @@ public class WalletController implements Serializable {
 		this.orderNumber = orderNumber;
 	}
 
+	public Compte getCompte() {
+		return compte;
+	}
+
+	public void setCompte(Compte compte) {
+		this.compte = compte;
+	}
+
+	public Action getSelectedShare() {
+		return selectedShare;
+	}
+
+	public void setSelectedShare(Action selectedShare) {
+		this.selectedShare = selectedShare;
+	}
+
+	public Portefeuille getWallet() {
+		return wallet;
+	}
+	
+	public void setWallet(Portefeuille wallet) {
+		this.wallet = wallet;
+	}
 }

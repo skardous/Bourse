@@ -5,77 +5,69 @@ import java.util.List;
 import javax.persistence.*;
 
 /**
- * Created with IntelliJ IDEA.
- * User: thiergeo
- * Date: 27/11/13
- * Time: 13:29
- * To change this template use File | Settings | File Templates.
+ * Created with IntelliJ IDEA. User: thiergeo Date: 27/11/13 Time: 13:29 To
+ * change this template use File | Settings | File Templates.
  */
 
 @Entity
-@NamedQueries({
-	  @NamedQuery(name=Societe.findByCode,
-	              query="SELECT s " +
-	                    "FROM Societe s " +
-	                    "WHERE s.code = :code")
-	})
+@NamedQueries({ @NamedQuery(name = Societe.findByCode, query = "SELECT s "
+		+ "FROM Societe s " + "WHERE s.code = :code") })
 public class Societe {
-	
+
 	public final static String findByCode = "Societe.findbycode";
+
+	@Id
+	private String code;
+
+	private String nom;
+
+	private String valeur;
+
+	@OneToMany(targetEntity = model.Historique.class)
+	private List<Historique> historique;
+
+	@OneToMany(mappedBy = "societe")
+	private List<Action> actions;
 	
-    @Id
-    @GeneratedValue
-    private int id;
+	@OneToMany(mappedBy = "societe")
+	private List<Speculation> speculations;
 
-    private String nom;
-    private String code;
-    private String valeur;
+	@ManyToOne
+	private Bourse bourse;
 
-    @OneToMany(targetEntity = model.Historique.class)
-    private List<Historique> historique;
-    
-    @OneToMany(mappedBy="societe")
-    private List<Action> actions;
-    
-    @ManyToOne
-    private Bourse bourse;
-    
-    public Societe(){}
+	public Societe() {
+	}
 
-    public Societe(String nom, String code, String valeur) {
+	public Societe(String nom, String code, String valeur, Bourse b) {
+		this.bourse = b;
 		this.nom = nom;
 		this.code = code;
 		this.valeur = valeur;
 	}
 
-	public int getId() {
-        return id;
-    }
+	public String getCode() {
+		return code;
+	}
 
-    public String getCode() {
-        return code;
-    }
+	public void setCode(String code) {
+		this.code = code;
+	}
 
-    public void setCode(String code) {
-        this.code = code;
-    }
+	public String getNom() {
+		return nom;
+	}
 
-    public String getNom() {
-        return nom;
-    }
+	public void setNom(String nom) {
+		this.nom = nom;
+	}
 
-    public void setNom(String nom) {
-        this.nom = nom;
-    }
+	public Bourse getBourse() {
+		return bourse;
+	}
 
-   
-    public Bourse getBourse() {
-        return bourse;
-    }
-
-    public void setBourse(Bourse bourse) {
-        this.bourse = bourse;
-    }
+	public void setBourse(Bourse bourse) {
+		this.bourse = bourse;
+	}
 
 	public String getValeur() {
 		return valeur;

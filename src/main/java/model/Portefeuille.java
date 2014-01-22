@@ -24,6 +24,9 @@ public class Portefeuille {
     @OneToMany(mappedBy="portefeuille")
     private List<Action> actions;
     
+    @OneToMany(mappedBy="portefeuille")
+    private List<Speculation> spectulations;
+    
     public Portefeuille() {
     }
 
@@ -31,10 +34,14 @@ public class Portefeuille {
         return id;
     }
     
+    /**
+     * @throws NumberFormatException si le cours de la société est "n/a"
+     * @return
+     */
     public float getValeur() {
     	float value = 0;
     	for (Action a : actions) {
-    		value += a.getValue();
+    		value += a.getNumber() * Float.parseFloat(a.getSociete().getValeur());
     	}
     	return value;
     }
@@ -46,4 +53,12 @@ public class Portefeuille {
     public void setActions(List<Action> actions) {
         this.actions = actions;
     }
+
+	public List<Speculation> getSpectulations() {
+		return spectulations;
+	}
+
+	public void setSpectulations(List<Speculation> spectulations) {
+		this.spectulations = spectulations;
+	}
 }

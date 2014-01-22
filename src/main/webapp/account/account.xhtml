@@ -27,5 +27,14 @@
 					actionListener="#{accountController.debiter}" />
 			</h:form>
 		</p:panel>
+		<p:panel header="Clore le compte">
+			<h:form>
+				<h:outputText value="Retirer de l'argent : "></h:outputText>
+				<p:inputText value="#{accountController.debitValue}">
+				</p:inputText>
+				<p:commandButton value="Submit"
+					actionListener="#{accountController.debiter}" />
+			</h:form>
+		</p:panel>
 	</ui:define>
 </ui:composition>

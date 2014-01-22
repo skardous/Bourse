@@ -4,15 +4,15 @@ import java.io.IOException;
 import java.io.Serializable;
 
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
-import ejb.AccountBean;
-import service.AccountService;
 import model.Compte;
+import util.NegativeSoldException;
+import ejb.AccountBean;
 
 @ManagedBean
 @ViewScoped
@@ -37,9 +37,14 @@ public class AccountController implements Serializable {
 		FacesContext.getCurrentInstance().getExternalContext()
 				.redirect("/Bourse/account/account.xhtml");
 	}
-	
+
 	public void debiter() throws IOException {
-		bean.debiter(compte, debitValue);
+		try {
+			bean.debiter(compte, debitValue);
+		} catch (NegativeSoldException e) {
+			FacesContext.getCurrentInstance().addMessage(null,
+					new FacesMessage("vous n'avez pas assez d'argent"));
+		}
 		FacesContext.getCurrentInstance().getExternalContext()
 				.redirect("/Bourse/account/account.xhtml");
 	}
@@ -67,7 +72,5 @@ public class AccountController implements Serializable {
 	public void setCompte(Compte compte) {
 		this.compte = compte;
 	}
-	
-	
 
 }

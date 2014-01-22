@@ -4,6 +4,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
+import util.NegativeSoldException;
+
 /**
  * Created with IntelliJ IDEA.
  * User: thiergeo
@@ -16,26 +18,28 @@ public class Compte {
 	@Id
     @GeneratedValue
     private int id;
-    private float solde;
+    private double solde;
     
     public Compte() {
     	this.solde = 0;
     }
 
-    public float getSolde() {
+    public double getSolde() {
         return solde;
     }
 
-    public void setSolde(float solde) {
+    public void setSolde(double solde) {
         this.solde = solde;
     }
 
-    public void crediter(float value) {
+    public void crediter(double value) {
         this.setSolde(this.solde + value);
     }
 
-    public void debiter(float value) {
-        // TODO Précondition pour vérifier > 0
+    public void debiter(double value) throws NegativeSoldException {
+        if (this.solde - value < 0) {
+        	throw new NegativeSoldException();
+        }
         this.setSolde(this.solde - value);
     }
 }

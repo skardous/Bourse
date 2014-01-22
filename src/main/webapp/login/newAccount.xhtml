@@ -10,9 +10,6 @@
 			<h:form>
 				<p:growl id="msgs" showDetail="true" sticky="false" />
 				<p:panelGrid columns="2">
-					<f:facet name="header">
-                    Facet
-                </f:facet>
 					<h:outputText value="Prénom : "></h:outputText>
 					<p:inputText value="#{clientController.client.name}"
 						required="true" requiredMessage="Entrez un prénom!" message="fc">

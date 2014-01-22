@@ -5,8 +5,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
-import util.NegativeActionNumberException;
-
 /**
  * Created with IntelliJ IDEA. User: thiergeo Date: 27/11/13 Time: 12:47 To
  * change this template use File | Settings | File Templates.
@@ -14,28 +12,42 @@ import util.NegativeActionNumberException;
 // Pas sur de ça
 // @Embeddable
 @Entity
-public class Action {
+public class Speculation {
 
 	@Id
+	@GeneratedValue
+	private int id;
+	
 	@ManyToOne
 	private Societe societe;
 
 	@ManyToOne
 	private Portefeuille portefeuille;
+	
+	private double valeurVente;
 
 	private int number;
-	
-	private double valeurAchat; 
 
-	public Action() {
+	public Speculation() {
 
 	}
 
-	public Action(int number, Societe societe, Portefeuille portefeuille) {
+	public Speculation(int number, double valeurVente, Societe societe, Portefeuille portefeuille) {
 		super();
+		this.valeurVente = valeurVente;
 		this.number = number;
 		this.societe = societe;
 		this.portefeuille = portefeuille;
+	}
+	
+
+	public double getTotalValue() {
+		return Double.parseDouble(this.societe.getValeur()) * this.number;
+	}
+	
+
+	public double getGains() {
+		return (this.valeurVente * this.number) - (getTotalValue());
 	}
 
 	public int getNumber() {
@@ -62,29 +74,12 @@ public class Action {
 		this.portefeuille = portefeuille;
 	}
 
-	public float getTotalValue() {
-		return Float.parseFloat(this.societe.getValeur()) * this.number;
+	public double getValeurVente() {
+		return valeurVente;
 	}
 
-	public void sell(int number) throws NegativeActionNumberException {
-		if ((this.number - number) < 0) {
-			throw new NegativeActionNumberException();
-		}
-		this.number = this.number - number;
-	}
-
-	@Override
-	public String toString() {
-		return "Action [societe=" + societe + ", portefeuille=" + portefeuille
-				+ ", number=" + number + "]";
-	}
-
-	public double getValeurAchat() {
-		return valeurAchat;
-	}
-
-	public void setValeurAchat(double valeurAchat) {
-		this.valeurAchat = valeurAchat;
+	public void setValeurVente(double valeurVente) {
+		this.valeurVente = valeurVente;
 	}
 
 }

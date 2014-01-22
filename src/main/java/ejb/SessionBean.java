@@ -36,7 +36,6 @@ public class SessionBean implements Serializable {
 			throw new UnknownUserException();
 		} else {
 			connectedUser = list.get(0);
-			System.out.println("connected user : " + list.get(0));
 		}
 	}
 

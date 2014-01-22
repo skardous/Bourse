@@ -7,28 +7,66 @@
 
 	<ui:define name="content">
 		<p:panel header="Solde">
-				<h:outputText value="#{sessionController.session.connectedUser.compte.solde}"></h:outputText>
+			<h:outputText
+				value="#{sessionController.session.connectedUser.compte.solde}"></h:outputText>
 		</p:panel>
+
 		<p:panel header="Valeur du portefeuille">
-				<h:outputText value="#{walletController.wallet.getValeur()}"></h:outputText>
+			<h:outputText value="#{walletController.wallet.valeur}"></h:outputText>
 		</p:panel>
-<!-- 		<p:panel header="Créditer"> -->
-<!-- 			<h:form> -->
-<!-- 				<h:outputText value="Ajouter de l'argent : "></h:outputText> -->
-<!-- 				<p:inputText value="#{accountController.creditValue}"> -->
-<!-- 				</p:inputText> -->
-<!-- 				<p:commandButton value="Submit" -->
-<!-- 					actionListener="#{accountController.crediter}" /> -->
-<!-- 			</h:form> -->
-<!-- 		</p:panel> -->
-<!-- 		<p:panel header="Débiter"> -->
-<!-- 			<h:form> -->
-<!-- 				<h:outputText value="Retirer de l'argent : "></h:outputText> -->
-<!-- 				<p:inputText value="#{accountController.debitValue}"> -->
-<!-- 				</p:inputText> -->
-<!-- 				<p:commandButton value="Submit" -->
-<!-- 					actionListener="#{accountController.debiter}" /> -->
-<!-- 			</h:form> -->
-<!-- 		</p:panel> -->
+
+		<p:panel header="Actions possédées" style="margin-bottom:10px;">
+			<p:dataTable id="shareTable" var="action"
+				value="#{walletController.wallet.actions}" sortMode="multiple"
+				rows="10" paginator="true">
+
+				<p:column sortBy="societe.nom" headerText="Societé">
+					<h:outputText value="#{action.societe.nom}" />
+				</p:column>
+
+				<p:column sortBy="number" headerText="Nombre">
+					<h:outputText value="#{action.number}" />
+				</p:column>
+
+				<p:column sortBy="societe.valeur" headerText="Cours Actuel">
+					<h:outputText value="#{action.societe.valeur}" />
+				</p:column>
+
+				<p:column sortBy="getTotalValue()" headerText="Valeur totale">
+					<h:outputText value="#{action.getTotalValue()}" />
+				</p:column>
+			</p:dataTable>
+		</p:panel>
+		
+		<p:panel header="Valeur des obligations (prix à payer en cas de vente immédiate)">
+			<h:outputText value="#{walletController.getObligationsTotal()}"></h:outputText>
+		</p:panel>
+		
+		<p:panel header="Obligations d'achat" style="margin-bottom:10px;">
+			<p:dataTable id="specTable" var="speculation"
+				value="#{walletController.wallet.spectulations}" sortMode="multiple"
+				rows="10" paginator="true">
+
+				<p:column sortBy="societe.nom" headerText="Societé">
+					<h:outputText value="#{speculation.societe.nom}" />
+				</p:column>
+
+				<p:column sortBy="number" headerText="Nombre d'actions">
+					<h:outputText value="#{speculation.number}" />
+				</p:column>
+				
+				<p:column sortBy="societe.nom" headerText="Cours de vente">
+					<h:outputText value="#{speculation.valeurVente}" />
+				</p:column>
+
+				<p:column sortBy="societe.valeur" headerText="Cours Actuel">
+					<h:outputText value="#{speculation.societe.valeur}" />
+				</p:column>
+
+				<p:column sortBy="societe.valeur" headerText="Gain (si achat immédiat)">
+					<h:outputText value="#{speculation.getGains()}" />
+				</p:column>
+			</p:dataTable>
+		</p:panel>
 	</ui:define>
 </ui:composition>

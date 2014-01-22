@@ -15,28 +15,42 @@
 		</p:panel>
 		<p:panel header="Ordre d'achat">
 			<h:form>
+				<p:growl id="msgs" showDetail="true" sticky="false" />
 				<h:outputText value="Code de la société : "></h:outputText>
 				<p:inputText value="#{walletController.orderCompanyCode}">
 				</p:inputText>
 				<h:outputText value="Quantité : "></h:outputText>
 				<p:inputText value="#{walletController.orderNumber}">
 				</p:inputText>
-				<p:selectOneMenu id="SE" value="#{walletController.orderCompanySE}">
-					<f:selectItem itemLabel="Selectionnez une bourse" itemValue="" />
-					<f:selectItems value="#{stockExController.listSE}" />					
-				</p:selectOneMenu>
-				<p:commandButton value="Submit"
+				<p:commandButton value="Acheter" update="msgs"
 					actionListener="#{walletController.orderBuy}" />
 			</h:form>
 		</p:panel>
-		<!-- 		<p:panel header="Débiter"> -->
-		<!-- 			<h:form> -->
-		<!-- 				<h:outputText value="Retirer de l'argent : "></h:outputText> -->
-		<!-- 				<p:inputText value="#{accountController.debitValue}"> -->
-		<!-- 				</p:inputText> -->
-		<!-- 				<p:commandButton value="Submit" -->
-		<!-- 					actionListener="#{accountController.debiter}" /> -->
-		<!-- 			</h:form> -->
-		<!-- 		</p:panel> -->
+		<p:panel header="Obligations d'achat" style="margin-bottom:10px;">
+			<p:dataTable id="shareTable" var="speculation"
+				value="#{walletController.wallet.spectulations}" sortMode="multiple"
+				rows="10" paginator="true">
+
+				<p:column sortBy="societe.nom" headerText="Societé">
+					<h:outputText value="#{speculation.societe.nom}" />
+				</p:column>
+
+				<p:column sortBy="number" headerText="Nombre d'actions">
+					<h:outputText value="#{speculation.number}" />
+				</p:column>
+				
+				<p:column sortBy="societe.nom" headerText="Cours de vente">
+					<h:outputText value="#{speculation.valeurVente}" />
+				</p:column>
+
+				<p:column sortBy="societe.valeur" headerText="Cours Actuel">
+					<h:outputText value="#{speculation.societe.valeur}" />
+				</p:column>
+
+				<p:column sortBy="societe.valeur" headerText="Gain (si achat immédiat)">
+					<h:outputText value="#{speculation.getGains()}" />
+				</p:column>
+			</p:dataTable>
+		</p:panel>
 	</ui:define>
 </ui:composition>

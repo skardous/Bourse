@@ -8,6 +8,12 @@
 		<class>model.Client</class>
 		<class>model.Bourse</class>
 		<class>model.Action</class>
+		<class>model.Administrateur</class>
+		<class>model.Compte</class>
+		<class>model.Societe</class>
+		<class>model.Historique</class>
+		<class>model.Utilisateur</class>
+		<class>model.Portefeuille</class>
 		<properties>
 			<property name="eclipselink.ddl-generation" value="create-tables" />
 		</properties>

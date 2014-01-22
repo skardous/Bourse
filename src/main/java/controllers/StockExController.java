@@ -18,10 +18,10 @@ import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 
-import utils.CSVRequests;
 import model.Historique;
 import model.Societe;
-import ejb.AccountBean;
+import ejb.SEBean;
+import ejb.SEBean.SE;
 
 @ManagedBean
 @ViewScoped
@@ -33,7 +33,7 @@ public class StockExController implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@EJB
-	private AccountBean bean;
+	private SEBean bean;
 
 	private String selectedSE;
 
@@ -46,15 +46,15 @@ public class StockExController implements Serializable {
 	private List<Historique> selectedHistorique = new ArrayList<Historique>();
 
 	public StockExController() {
-		listSE.put("NYSE", "NYSE");
-		listSE.put("NASDAQ", "NASDAQ");
-		listSE.put("AMEX", "AMEX");
+		for (SE se : SE.values()) {
+			listSE. put(se.name(), se.name());
+		}
 	}
 
 	public void selectSE() throws MalformedURLException, IOException {
 		companyList.clear();
-		CSVRequests requester = new CSVRequests();
-		companyList = requester.getCompaniesBySE(selectedSE);
+		companyList = bean.getCompaniesBySE(selectedSE);
+		//companyList = requester.getCompaniesBySE(selectedSE);
 	}
 
 	public void updateSelectedHistorique() throws MalformedURLException,
@@ -63,7 +63,6 @@ public class StockExController implements Serializable {
 		String line = "";
 		String cvsSplitBy = ",";
 
-		System.out.println("selectedComp : " + selectedCompany.getCode());
 		if (selectedCompany.getCode() != null) {
 			Calendar c = new GregorianCalendar();
 			InputStream input = new URL(

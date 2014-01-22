@@ -3,32 +3,97 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:p="http://primefaces.org/ui">
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
 
 	<ui:define name="content">
 		<p:panel header="Solde">
-				<h:outputText value="#{sessionController.session.connectedUser.compte.solde}"></h:outputText>
+			<h:outputText
+				value="#{sessionController.session.connectedUser.compte.solde}"></h:outputText>
 		</p:panel>
 		<p:panel header="Valeur du portefeuille">
-				<h:outputText value="#{walletController}"></h:outputText>
+			<h:outputText value="#{walletController.wallet.valeur}"></h:outputText>
 		</p:panel>
-<!-- 		<p:panel header="Créditer"> -->
-<!-- 			<h:form> -->
-<!-- 				<h:outputText value="Ajouter de l'argent : "></h:outputText> -->
-<!-- 				<p:inputText value="#{accountController.creditValue}"> -->
-<!-- 				</p:inputText> -->
-<!-- 				<p:commandButton value="Submit" -->
-<!-- 					actionListener="#{accountController.crediter}" /> -->
-<!-- 			</h:form> -->
-<!-- 		</p:panel> -->
-<!-- 		<p:panel header="Débiter"> -->
-<!-- 			<h:form> -->
-<!-- 				<h:outputText value="Retirer de l'argent : "></h:outputText> -->
-<!-- 				<p:inputText value="#{accountController.debitValue}"> -->
-<!-- 				</p:inputText> -->
-<!-- 				<p:commandButton value="Submit" -->
-<!-- 					actionListener="#{accountController.debiter}" /> -->
-<!-- 			</h:form> -->
-<!-- 		</p:panel> -->
+
+		<p:panel header="Actions possédées" style="margin-bottom:10px;">
+			<h:form id="tableSell">
+				<p:dataTable id="shareTable" var="action"
+					value="#{walletController.wallet.actions}" sortMode="multiple"
+					rows="10" paginator="true">
+
+					<p:column sortBy="code" headerText="Vendre">
+						<p:commandLink value="Vendre" update=":sellForm"
+							oncomplete="sellDialog.show()" title="View">
+							<f:setPropertyActionListener value="#{action}"
+								target="#{walletController.selectedShare}" />
+						</p:commandLink>
+					</p:column>
+
+					<p:column sortBy="societe.code" headerText="Societé Code">
+						<h:outputText value="#{action.societe.code}" />
+					</p:column>
+
+					<p:column sortBy="societe.nom" headerText="Societé">
+						<h:outputText value="#{action.societe.nom}" />
+					</p:column>
+
+					<p:column sortBy="number" headerText="Nombre">
+						<h:outputText value="#{action.number}" />
+					</p:column>
+
+					<p:column sortBy="societe.valeur" headerText="Cours Actuel">
+						<h:outputText value="#{action.societe.valeur}" />
+					</p:column>
+
+					<p:column sortBy="getTotalValue()" headerText="Valeur totale">
+						<h:outputText value="#{action.getTotalValue()}" />
+					</p:column>
+				</p:dataTable>
+			</h:form>
+		</p:panel>
+
+		<c:if
+			test="#{sessionController.session.connectedUser.confiance.id == 2}">
+			<p:panel header="Spéculation à la baisse" style="margin-bottom:10px;">
+				<h:outputText
+					value="Attention ! Une action vendue ici devra être achetée plus tard!"></h:outputText>
+				<h:form id="sellSpecForm">
+					<p>
+						<h:outputText value="Code de la société : "></h:outputText>
+						<p:inputText
+							value="#{walletController.orderCompanyCode}">
+						</p:inputText>
+					</p>
+					<p>
+						<h:outputText value="Quantité : "></h:outputText>
+						<p:inputText value="#{walletController.orderNumber}">
+						</p:inputText>
+					</p>					
+					<p:commandButton value="Vendre" update=":growl"
+						actionListener="#{walletController.orderSpeculativeSale}" />
+				</h:form>
+			</p:panel>
+		</c:if>
+
+		<p:dialog header="Vendre" widgetVar="sellDialog" resizable="false"
+			id="sellDlg">
+			<h:form id="sellForm">
+				<p>
+					<h:outputText value="Code de la société : "></h:outputText>
+					<h:outputText
+						value="#{walletController.selectedShare.societe.code}">
+					</h:outputText>
+				</p>
+				<p>
+					<h:outputText value="Quantité : "></h:outputText>
+					<p:inputText value="#{walletController.orderNumber}">
+					</p:inputText>
+				</p>
+				<p:commandButton value="Vendre" update=":growl"
+					actionListener="#{walletController.orderSale}" />
+			</h:form>
+		</p:dialog>
+
+		<p:growl id="growl" showDetail="true" life="5000" />
 	</ui:define>
 </ui:composition>
