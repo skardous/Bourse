@@ -9,7 +9,6 @@ import javax.ejb.Stateless;
 
 import model.Portefeuille;
 import model.Societe;
-import model.Utilisateur;
 
 
 @Stateless
@@ -19,7 +18,8 @@ public class CompanyService extends DataAccessService<Portefeuille>{
         super(Portefeuille.class);
     }
     
-    public Societe findCompanyByCode(String code) {
+    @SuppressWarnings("unchecked")
+	public Societe findCompanyByCode(String code) {
     	Map<String, Object> parameters = new HashMap<String, Object>();
     	parameters.put("code", code);
     	List<Societe> list = this.findWithNamedQuery(Societe.findByCode, parameters);

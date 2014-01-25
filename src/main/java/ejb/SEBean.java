@@ -1,18 +1,13 @@
 package ejb;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
 
 import model.Bourse;
-import model.Compte;
 import model.Societe;
-import service.AccountService;
 import service.SEService;
 
 @Stateful

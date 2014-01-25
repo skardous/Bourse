@@ -19,9 +19,15 @@ public class Compte {
     @GeneratedValue
     private int id;
     private double solde;
+    private boolean open;
     
     public Compte() {
     	this.solde = 0;
+    	this.setOpen(true);
+    }
+    
+    public void close() {
+    	this.open = false;
     }
 
     public double getSolde() {
@@ -42,4 +48,12 @@ public class Compte {
         }
         this.setSolde(this.solde - value);
     }
+
+	public boolean isOpen() {
+		return open;
+	}
+
+	public void setOpen(boolean open) {
+		this.open = open;
+	}
 }

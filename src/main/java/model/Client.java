@@ -7,12 +7,17 @@ import javax.persistence.*;
 @Entity
 @NamedQueries({
 		@NamedQuery(name = Client.ALL, query = "SELECT c FROM Client c "),
-		@NamedQuery(name = Client.TOTAL, query = "SELECT COUNT(c) FROM Client c") })
+		@NamedQuery(name = Client.TOTAL, query = "SELECT COUNT(c) FROM Client c"),
+		@NamedQuery(name= Client.findClientByLogin, query="SELECT c " +
+				"FROM Client c " +
+      			"WHERE c.username = :login")})
 public class Client extends Utilisateur implements Serializable {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+
+	public static final String findClientByLogin = "Client.findClientByLogin";
 
 	private String name;
 	private String lastName;

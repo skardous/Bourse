@@ -6,9 +6,8 @@
 	xmlns:p="http://primefaces.org/ui">
 
 	<ui:define name="content">
-		<p:panel header="Créer un compte">
+		<p:panel header="Créer un compte">			
 			<h:form>
-				<p:growl id="msgs" showDetail="true" sticky="false" />
 				<p:panelGrid columns="2">
 					<h:outputText value="Prénom : "></h:outputText>
 					<p:inputText value="#{clientController.client.name}"
@@ -37,6 +36,7 @@
 							icon="ui-icon-check" style="margin:0"></p:commandButton>
 					</f:facet>
 				</p:panelGrid>
+				<p:growl id="msgs" showDetail="true" sticky="false" />
 			</h:form>
 		</p:panel>
 	</ui:define>

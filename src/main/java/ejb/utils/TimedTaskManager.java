@@ -1,8 +1,5 @@
 package ejb.utils;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
-
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.ejb.Schedule;
@@ -19,34 +16,40 @@ public class TimedTaskManager {
 
 	@EJB
 	CSVRequests requests;
-	
+
 	@EJB
 	ConfianceService confianceService;
-	
 
 	@Schedule(second = "0", minute = "*/1", hour = "*")
-	public void updateDB() throws MalformedURLException, IOException {
+	public void updateDB() {
 		System.out.println("updatedb");
-		requests.updateDatabase();
+		try {
+			requests.updateDatabase();
+		} catch (Exception e) {
+			System.err
+					.println("Impossible de mettre à jour les bourses : temps de réponse trop long");
+		}
+		System.out.println("endUpdateDB");
 	}
-	
+
 	@PostConstruct
 	public void initDB() {
 		for (ConfList confiance : ConfList.values()) {
-			Confiance conf = new Confiance(confiance.ordinal() + 1, confiance.name());
+			Confiance conf = new Confiance(confiance.ordinal() + 1,
+					confiance.name());
 			if (confianceService.find(confiance.ordinal() + 1) == null) {
 				confianceService.create(conf);
 			}
 		}
-//		Confiance c = new Confiance(1, "normal");
-//		Confiance p = new Confiance(2, "privilegié"); 
-//		if (confianceService.find(1) == null) {
-//			confianceService.create(c);
-//		}
-//		if (confianceService.find(2) == null) {
-//			confianceService.create(p);
-//		} 
+		// Confiance c = new Confiance(1, "normal");
+		// Confiance p = new Confiance(2, "privilegié");
+		// if (confianceService.find(1) == null) {
+		// confianceService.create(c);
+		// }
+		// if (confianceService.find(2) == null) {
+		// confianceService.create(p);
+		// }
 		System.out.println("initDB");
-	} 
+	}
 
 }

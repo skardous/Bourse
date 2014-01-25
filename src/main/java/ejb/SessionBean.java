@@ -11,6 +11,8 @@ import javax.faces.context.FacesContext;
 import org.omg.CORBA.UnknownUserException;
 
 import service.LoginService;
+import util.AccountClosedException;
+import model.Client;
 import model.Utilisateur;
 
 @Stateful
@@ -30,12 +32,20 @@ public class SessionBean implements Serializable {
 	private LoginService service;
 
 	public void login(String username, String password)
-			throws UnknownUserException, IOException {
+			throws UnknownUserException, IOException, AccountClosedException {
 		List<Utilisateur> list = service.tryLogin(username, password);
 		if (list.isEmpty()) {
 			throw new UnknownUserException();
 		} else {
-			connectedUser = list.get(0);
+			if (list.get(0) instanceof Client){
+				if (!((Client)list.get(0)).getCompte().isOpen()) {
+					throw new AccountClosedException();
+				} else {
+					connectedUser = list.get(0);
+				}				
+			} else {
+				connectedUser = list.get(0);
+			}
 		}
 	}
 

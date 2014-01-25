@@ -1,21 +1,14 @@
 package controllers;
 
 import java.io.IOException;
-import java.util.List;
 
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
-import ejb.AdminBean;
-import ejb.ClientBean;
 import model.Administrateur;
-import model.Client;
-import model.Compte;
-import model.Portefeuille;
-import service.ClientService;
-import service.ConfianceService;
+import ejb.AdminBean;
 
 @ManagedBean
 @ViewScoped

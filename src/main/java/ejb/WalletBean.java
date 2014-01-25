@@ -4,22 +4,16 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.rmi.activation.UnknownObjectException;
-import java.util.List;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
 
-import org.omg.CORBA.UnknownUserException;
-
-import ejb.utils.CSVRequests;
 import model.Action;
 import model.Compte;
 import model.Portefeuille;
 import model.Societe;
 import model.Speculation;
-import service.AccountService;
 import service.CompanyService;
-import service.SEService;
 import service.ShareService;
 import service.SpeculationService;
 import service.WalletService;

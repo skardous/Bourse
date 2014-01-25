@@ -16,7 +16,8 @@ public class SEService extends DataAccessService<Bourse>{
         super(Bourse.class);
     }   
     
-    public Bourse getSEByName(String name) {
+    @SuppressWarnings("unchecked")
+	public Bourse getSEByName(String name) {
     	Map<String, Object> parameters = new HashMap<String, Object>();
     	parameters.put("name", name);
     	List<Bourse> list = this.findWithNamedQuery(Bourse.findSEByName, parameters);

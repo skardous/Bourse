@@ -88,7 +88,8 @@ public abstract class DataAccessService<T> {
      * @param namedQueryName
      * @return List
      */
-    public List findWithNamedQuery(String namedQueryName) {
+    @SuppressWarnings("rawtypes")
+	public List findWithNamedQuery(String namedQueryName) {
         return this.em.createNamedQuery(namedQueryName).getResultList();
     }
 
@@ -98,7 +99,8 @@ public abstract class DataAccessService<T> {
      * @param parameters
      * @return List
      */
-    public List findWithNamedQuery(String namedQueryName, Map parameters) {
+    @SuppressWarnings("rawtypes")
+	public List findWithNamedQuery(String namedQueryName, Map parameters) {
         return findWithNamedQuery(namedQueryName, parameters, 0);
     }
 
@@ -108,6 +110,7 @@ public abstract class DataAccessService<T> {
      * @param resultLimit
      * @return List
      */
+    @SuppressWarnings("rawtypes")
     public List findWithNamedQuery(String queryName, int resultLimit) {
         return this.em.createNamedQuery(queryName).
                 setMaxResults(resultLimit).
@@ -121,7 +124,9 @@ public abstract class DataAccessService<T> {
      * @param type
      * @return List
      */
-    public List<T> findByNativeQuery(String sql) {
+    
+    @SuppressWarnings("unchecked")
+	public List<T> findByNativeQuery(String sql) {
         return this.em.createNativeQuery(sql, type).getResultList();
     }
 
@@ -143,6 +148,7 @@ public abstract class DataAccessService<T> {
      * @param resultLimit
      * @return List
      */
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     public List findWithNamedQuery(String namedQueryName, Map parameters, int resultLimit) {
         Set<Map.Entry<String, Object>> rawParameters = parameters.entrySet();
         Query query = this.em.createNamedQuery(namedQueryName);
@@ -161,7 +167,8 @@ public abstract class DataAccessService<T> {
      * @param end
      * @return List
      */
-    public List findWithNamedQuery(String namedQueryName, int start, int end) {
+    @SuppressWarnings("rawtypes")
+	public List findWithNamedQuery(String namedQueryName, int start, int end) {
         Query query = this.em.createNamedQuery(namedQueryName);
         query.setMaxResults(end - start);
         query.setFirstResult(start);

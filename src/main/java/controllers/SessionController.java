@@ -11,6 +11,7 @@ import javax.faces.context.FacesContext;
 
 import org.omg.CORBA.UnknownUserException;
 
+import util.AccountClosedException;
 import ejb.SessionBean;
 import ejb.utils.CSVRequests;
 
@@ -40,10 +41,12 @@ public class SessionController implements Serializable {
 			session.login(username, password);
 			FacesContext.getCurrentInstance().getExternalContext()
 			.redirect("/Bourse/index.xhtml");
-			//requester.updateDatabase();
 		} catch (UnknownUserException e) {
 			FacesContext.getCurrentInstance().addMessage(null,
-					new FacesMessage("utilisateur inconnu"));
+					new FacesMessage("Utilisateur inconnu"));
+		} catch (AccountClosedException e) {
+			FacesContext.getCurrentInstance().addMessage(null,
+					new FacesMessage("Ce compte a été fermé"));
 		}
 	}
 

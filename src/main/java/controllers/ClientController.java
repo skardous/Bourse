@@ -8,19 +8,16 @@ import java.util.List;
 import java.util.Map;
 
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
+import model.Client;
+import model.Confiance;
+import util.AlreadyTakenLoginException;
 import ejb.ClientBean;
 import ejb.ClientBean.ConfList;
-import ejb.SEBean.SE;
-import model.Client;
-import model.Compte;
-import model.Confiance;
-import model.Portefeuille;
-import service.ClientService;
-import service.ConfianceService;
 
 @ManagedBean
 @ViewScoped
@@ -51,7 +48,7 @@ public class ClientController implements Serializable  {
 		int id = ConfList.valueOf(selectedClient.getConfiance().getIntitule()).ordinal() + 1;
 		String intitule = selectedClient.getConfiance().getIntitule();
 		Confiance c = new Confiance(id, intitule);
-		System.out.println(c);
+		System.out.println("confiance selectionnée : " +c);
 		selectedClient.setConfiance(c);
 	}
 
@@ -64,9 +61,15 @@ public class ClientController implements Serializable  {
 	}
 
 	public void createclient() throws IOException {
-		clientBean.createClient(client);
-		FacesContext.getCurrentInstance().getExternalContext()
-		.redirect("/Bourse/login/login.xhtml");
+		try {
+			clientBean.createClient(client);
+			FacesContext.getCurrentInstance().getExternalContext()
+			.redirect("/Bourse/login/login.xhtml");
+		} catch (AlreadyTakenLoginException e) {
+			FacesContext.getCurrentInstance().addMessage(null,
+					new FacesMessage("Login déjà utilisé"));
+		}
+		
 	}
 	
 	public void updateclient() throws IOException {

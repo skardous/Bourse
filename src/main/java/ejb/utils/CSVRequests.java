@@ -37,18 +37,15 @@ public class CSVRequests {
 		InputStream input = new URL(
 				"http://www.nasdaq.com/screening/companies-by-industry.aspx?exchange="
 						+ se + "&render=download").openStream();
-		System.out.println("1");
 		BufferedReader br = new BufferedReader(new InputStreamReader(input,
 				"UTF-8"));
-		System.out.println("2");
 		int lineNbr = 0;
 		Bourse b = service.getSEByName(se);
-		System.out.println("3");
 		if (b == null) {
 			b = new Bourse(se);
 		}
+		System.out.println("startSEwhile");
 		while ((line = br.readLine()) != null) {
-			System.out.println(line);
 			lineNbr++;
 			if (lineNbr != 1) {
 				String[] company = line.split(cvsSplitBy);
@@ -56,9 +53,11 @@ public class CSVRequests {
 						company[0].substring(1), company[2], b));
 			}
 		}
+		System.out.println("endSEwhile");
 		br.close();
 		b.setSocietes(companyList);
 		service.update(b);
+		System.out.println("endUpdateSE");
 	}
 	
 	public void updateDatabase() throws MalformedURLException, IOException {			

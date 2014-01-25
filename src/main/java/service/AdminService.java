@@ -4,7 +4,6 @@ package service;
 import javax.ejb.Stateless;
 
 import model.Administrateur;
-import model.Client;
 
 
 @Stateless

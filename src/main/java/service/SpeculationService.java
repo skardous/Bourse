@@ -2,7 +2,6 @@ package service;
 
 import javax.ejb.Stateless;
 
-import model.Action;
 import model.Speculation;
 
 @Stateless

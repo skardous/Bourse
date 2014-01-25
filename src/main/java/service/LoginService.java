@@ -6,7 +6,6 @@ import java.util.Map;
 
 import javax.ejb.Stateless;
 
-import model.Client;
 import model.Utilisateur;
 
 @Stateless
@@ -16,7 +15,8 @@ public class LoginService extends DataAccessService<Utilisateur>{
         super(Utilisateur.class);
     }   
     
-    public List<Utilisateur> tryLogin(String username, String password) {
+    @SuppressWarnings("unchecked")
+	public List<Utilisateur> tryLogin(String username, String password) {
     	Map<String, Object> parameters = new HashMap<String, Object>();
     	parameters.put("pass", password);
     	parameters.put("name", username);
