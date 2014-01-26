@@ -33,7 +33,6 @@ public class CSVRequests {
 		List<Societe> companyList = new ArrayList<Societe>();
 		String line = "";
 		String cvsSplitBy = "\",\"";
-
 		InputStream input = new URL(
 				"http://www.nasdaq.com/screening/companies-by-industry.aspx?exchange="
 						+ se + "&render=download").openStream();
@@ -57,10 +56,11 @@ public class CSVRequests {
 		br.close();
 		b.setSocietes(companyList);
 		service.update(b);
+		
 		System.out.println("endUpdateSE");
 	}
 	
-	public void updateDatabase() throws MalformedURLException, IOException {			
+	public void updateDatabase() throws MalformedURLException, IOException{			
 		for (SE se : SE.values()) {
 			this.updateSE(se.name());
 		}

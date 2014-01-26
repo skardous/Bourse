@@ -6,17 +6,11 @@
 	xmlns:p="http://primefaces.org/ui">
 
 	<ui:define name="content">
-		<p:panel header="Créer un compte">
-			<h:form>
-				<h:outputText value="Prénom : "></h:outputText>
-				<p:inputText value="#{clientController.client.name}">
-				</p:inputText>
-				<h:outputText value="Nom : "></h:outputText>
-				<p:inputText value="#{clientController.client.lastName}">
-				</p:inputText>
-				<p:commandButton value="Submit"
-					actionListener="#{clientController.createclient}" />
-			</h:form>
+		<p:panel header="Accueil">
+			<h1>Application Bourse : Projet JEE des M2 GIL</h1>
+			<p>Bienvenue sur l'application développée dans le cadre du projet de JEE de l'université de Rouen.</p>
+			<p>Ce projet a été développé par Simon KARDOUS et Geoffrey THIERRY.</p>
+			<p>Pour commencer, nous vous suggérons de créer un compte.</p>
 		</p:panel>
 	</ui:define>
 </ui:composition>

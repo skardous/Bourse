@@ -49,6 +49,12 @@ public class SessionController implements Serializable {
 					new FacesMessage("Ce compte a été fermé"));
 		}
 	}
+	
+	public void logout() throws IOException {
+		session.logout();
+		FacesContext.getCurrentInstance().getExternalContext()
+		.redirect("/Bourse/index.xhtml");
+	}
 
 	public String getUsername() {
 		return username;

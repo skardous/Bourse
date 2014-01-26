@@ -1,0 +1,132 @@
+<ui:composition template="/templates/layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	<ui:define name="content">
+		<p:dataTable id="dataTable" var="client"
+			value="#{clientController.clientsList}" sortMode="multiple" rows="25"
+			paginator="true">
+			<f:facet name="header">  
+            Liste des Clients  
+        </f:facet>
+
+			<p:column sortBy="name" headerText="Prénom">
+				<h:outputText value="#{client.name}" />
+			</p:column>
+
+			<p:column sortBy="lastName" headerText="Nom">
+				<h:outputText value="#{client.lastName}" />
+			</p:column>
+
+			<p:column sortBy="username" headerText="Login">
+				<h:outputText value="#{client.username}" />
+			</p:column>
+
+			<p:column sortBy="client.confiance.intitule"
+				headerText="Niv. de confiance">
+				<h:outputText value="#{client.confiance.intitule}" />
+			</p:column>
+
+			<p:column sortBy="code" headerText="Portefeuille">
+				<p:commandLink value="Voir le portefeuille" update=":walletDlg"
+					oncomplete="walletDialog.show()" title="View">
+					<f:setPropertyActionListener value="#{client}"
+						target="#{clientController.selectedClient}" />
+				</p:commandLink>
+			</p:column>
+
+			<p:column sortBy="code" headerText="Editer">
+				<p:commandLink value="Editer" update=":editForm"
+					oncomplete="editDialog.show()" title="View">
+					<f:setPropertyActionListener value="#{client}"
+						target="#{clientController.selectedClient}" />
+				</p:commandLink>
+			</p:column>
+
+		</p:dataTable>
+
+		<p:dialog
+			header="Editer #{clientController.selectedClient.name} #{clientController.selectedClient.lastName}"
+			widgetVar="editDialog" resizable="false" id="editDlg">
+			<h:form id="editForm">
+				<p:growl id="msgs" showDetail="true" sticky="false" />
+				<p:panelGrid columns="2">
+					<h:outputText value="Prénom : "></h:outputText>
+					<p:inputText value="#{clientController.selectedClient.name}"
+						required="true" requiredMessage="Entrez un prénom!" message="fc">
+						<f:validateLength minimum="1" />
+					</p:inputText>
+					<h:outputText value="Nom : "></h:outputText>
+					<p:inputText value="#{clientController.selectedClient.lastName}"
+						required="true" requiredMessage="Entrez un nom!" message="fc">
+						<f:validateLength minimum="1" />
+					</p:inputText>
+					<h:outputText value="Login : "></h:outputText>
+					<p:inputText value="#{clientController.selectedClient.username}"
+						required="true" requiredMessage="Entrez un login!" message="fc">
+						<f:validateLength minimum="1" />
+					</p:inputText>
+					<h:outputText value="Mot de passe : "></h:outputText>
+					<p:password value="#{clientController.selectedClient.password}"
+						required="true" requiredMessage="Entrez un mot de passe!"
+						message="fc">
+						<f:validateLength minimum="1" />
+					</p:password>
+					<h:outputText value="Confiance : "></h:outputText>
+					<p:selectOneMenu id="confiance" value="#{clientController.selectedClient.confiance.intitule}">						
+						<f:selectItems value="#{clientController.listConfiance}" />
+						<p:ajax 
+							listener="#{clientController.selectConfiance}" />
+					</p:selectOneMenu>
+					<f:facet name="footer">
+						<p:commandButton value="Valider" update="msgs"
+							actionListener="#{clientController.updateclient}" type="submit"
+							icon="ui-icon-check" style="margin:0"></p:commandButton>
+					</f:facet>
+				</p:panelGrid>
+			</h:form>
+		</p:dialog>
+
+		<p:dialog
+			header="Portefeuille de #{clientController.selectedClient.name} #{clientController.selectedClient.lastName} "
+			widgetVar="walletDialog" resizable="false" id="walletDlg">
+			<p:panel header="Solde">
+				<h:outputText
+					value="#{clientController.selectedClient.compte.solde}"></h:outputText>
+			</p:panel>
+
+			<p:panel header="Valeur du portefeuille">
+				<h:outputText
+					value="#{clientController.selectedClient.portefeuille.valeur}"></h:outputText>
+			</p:panel>
+
+			<p:panel header="Actions possédées" style="margin-bottom:10px;">
+				<p:dataTable id="shareTable" var="action"
+					value="#{clientController.selectedClient.portefeuille.actions}"
+					sortMode="multiple" rows="10" paginator="true">
+
+					<p:column sortBy="societe.nom" headerText="Societé">
+						<h:outputText value="#{action.societe.nom}" />
+					</p:column>
+
+					<p:column sortBy="number" headerText="Nombre">
+						<h:outputText value="#{action.number}" />
+					</p:column>
+
+					<p:column sortBy="societe.valeur" headerText="Cours Actuel">
+						<h:outputText value="#{action.societe.valeur}" />
+					</p:column>
+
+					<p:column sortBy="getTotalValue()" headerText="Valeur totale">
+						<h:outputText value="#{action.getTotalValue()}" />
+					</p:column>
+				</p:dataTable>
+			</p:panel>
+		</p:dialog>
+
+		<p:growl id="growl" showDetail="true" life="5000" />
+
+	</ui:define>
+</ui:composition>

@@ -10,9 +10,12 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
+import model.Client;
 import model.Compte;
+import model.Utilisateur;
 import util.NegativeSoldException;
 import ejb.AccountBean;
+import ejb.SessionBean;
 
 @ManagedBean
 @ViewScoped
@@ -23,9 +26,12 @@ public class AccountController implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 
+	@ManagedProperty(value = "#{sessionController.session}")
+	private SessionBean session;
+	
 	@ManagedProperty(value = "#{sessionController.session.connectedUser.compte}")
 	private Compte compte;
-
+	
 	@EJB
 	private AccountBean bean;
 
@@ -47,6 +53,16 @@ public class AccountController implements Serializable {
 		}
 		FacesContext.getCurrentInstance().getExternalContext()
 				.redirect("/Bourse/account/account.xhtml");
+	}
+
+	public void clore() throws IOException {
+		System.out.println("cloture de compte...");
+		bean.clore(compte);
+		System.out.println("logout...");
+		session.logout();
+		System.out.println("redirection...");
+		FacesContext.getCurrentInstance().getExternalContext()
+				.redirect("/Bourse/index.xhtml");
 	}
 
 	public Integer getCreditValue() {
@@ -71,6 +87,14 @@ public class AccountController implements Serializable {
 
 	public void setCompte(Compte compte) {
 		this.compte = compte;
+	}
+
+	public SessionBean getSession() {
+		return session;
+	}
+
+	public void setSession(SessionBean session) {
+		this.session = session;
 	}
 
 }

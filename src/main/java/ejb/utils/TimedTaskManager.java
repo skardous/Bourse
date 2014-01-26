@@ -20,12 +20,13 @@ public class TimedTaskManager {
 	@EJB
 	ConfianceService confianceService;
 
+	//TODO : trouver une solution pour "tuer" les tâches de requests quand l'URL n'est pas atteinte
 	@Schedule(second = "0", minute = "*/1", hour = "*")
 	public void updateDB() {
 		System.out.println("updatedb");
 		try {
 			requests.updateDatabase();
-		} catch (Exception e) {
+		} catch (Exception e) {			
 			System.err
 					.println("Impossible de mettre à jour les bourses : temps de réponse trop long");
 		}
@@ -38,7 +39,7 @@ public class TimedTaskManager {
 			Confiance conf = new Confiance(confiance.ordinal() + 1,
 					confiance.name());
 			if (confianceService.find(confiance.ordinal() + 1) == null) {
-				confianceService.create(conf);
+				confianceService.create(conf); 
 			}
 		}
 		// Confiance c = new Confiance(1, "normal");

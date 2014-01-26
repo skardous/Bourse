@@ -19,6 +19,7 @@ public class AccountBean implements Serializable {
 	 */
 	@EJB
 	private AccountService service;
+		
 
 	public void crediter(Compte c, double montant) {
 		c.crediter(montant);
@@ -28,6 +29,11 @@ public class AccountBean implements Serializable {
 	public void debiter(Compte c, double d) throws NegativeSoldException {		
 		c.debiter(d);
 		service.update(c);
+	}
+
+	public void clore(Compte compte) {
+		compte.close();
+		service.update(compte);
 	}
 	
 

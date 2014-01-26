@@ -5,3 +5,13 @@ build
 .classpath
 Bourse.iml
 /target
+/classworlds
+/com
+/commonj
+/commons-cli
+/doc
+/javax
+/junit
+/net
+/org
+/xpp3

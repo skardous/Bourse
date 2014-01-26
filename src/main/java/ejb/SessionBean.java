@@ -6,14 +6,14 @@ import java.util.List;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
-import javax.faces.context.FacesContext;
+
+import model.Client;
+import model.Utilisateur;
 
 import org.omg.CORBA.UnknownUserException;
 
 import service.LoginService;
 import util.AccountClosedException;
-import model.Client;
-import model.Utilisateur;
 
 @Stateful
 public class SessionBean implements Serializable {
@@ -37,8 +37,11 @@ public class SessionBean implements Serializable {
 		if (list.isEmpty()) {
 			throw new UnknownUserException();
 		} else {
+			System.out.println("plop lp o");
 			if (list.get(0) instanceof Client){
+				System.out.println("isclient");
 				if (!((Client)list.get(0)).getCompte().isOpen()) {
+					System.out.println("compte fermé");
 					throw new AccountClosedException();
 				} else {
 					connectedUser = list.get(0);
@@ -50,9 +53,7 @@ public class SessionBean implements Serializable {
 	}
 
 	public void logout() throws IOException {
-		connectedUser = null;
-		FacesContext.getCurrentInstance().getExternalContext()
-		.redirect("/Bourse/index.xhtml");
+		connectedUser = null;		
 	}
 
 	public Utilisateur getConnectedUser() {

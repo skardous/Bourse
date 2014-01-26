@@ -42,7 +42,7 @@
 					</p:submenu>					
 				</c:if>
 				<p:menuitem value="Se déconnecter"
-					action="#{sessionController.session.logout}" icon="ui-icon-power" />
+					action="#{sessionController.logout}" icon="ui-icon-power" />
 			</c:if>
 			<c:if test="#{sessionController.session.connectedUser == null}">
 				<p:menuitem value="Se connecter"
