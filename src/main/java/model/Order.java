@@ -7,7 +7,7 @@ import javax.persistence.ManyToOne;
 import util.NegativeActionNumberException;
 
 @Entity
-public class Action {
+public class Order {
 
 	@Id
 	@ManyToOne
@@ -19,12 +19,14 @@ public class Action {
 	private int number;
 	
 	private double valeurAchat; 
+		
+	private String date;
 
-	public Action() {
+	public Order() {
 
 	}
 
-	public Action(int number, Societe societe, Portefeuille portefeuille) {
+	public Order(int number, Societe societe, Portefeuille portefeuille) {
 		super();
 		this.number = number;
 		this.societe = societe;
@@ -59,25 +61,22 @@ public class Action {
 		return Float.parseFloat(this.societe.getValeur()) * this.number;
 	}
 
-	public void sell(int number) throws NegativeActionNumberException {
-		if ((this.number - number) < 0) {
-			throw new NegativeActionNumberException();
-		}
-		this.number = this.number - number;
-	}
-
-	@Override
-	public String toString() {
-		return "Action [societe=" + societe + ", portefeuille=" + portefeuille
-				+ ", number=" + number + "]";
-	}
-
+	
+	
 	public double getValeurAchat() {
 		return valeurAchat;
 	}
 
 	public void setValeurAchat(double valeurAchat) {
 		this.valeurAchat = valeurAchat;
+	}
+
+	public String getDate() {
+		return date;
+	}
+
+	public void setDate(String date) {
+		this.date = date;
 	}
 
 }

@@ -9,13 +9,6 @@ import javax.persistence.OneToMany;
 
 import java.util.List;
 
-/**
- * Created with IntelliJ IDEA.
- * User: thiergeo
- * Date: 27/11/13
- * Time: 13:29
- * To change this template use File | Settings | File Templates.
- */
 
 @Entity
 @NamedQueries({
