@@ -27,23 +27,43 @@ public class ClientController implements Serializable  {
 
 	@EJB
 	private ClientBean clientBean;
-	
+
+	/**
+	 * La liste de tous les clients de l'application.
+	 */
 	private List<Client> clientsList;
 
+	/**
+	 * Un nouveau client qui peut être ajouté.
+	 */
 	private Client client = new Client();
-	
+
+	/**
+	 * Le client selectionné.
+	 */
 	private Client selectedClient;
-	
+
+	/**
+	 * Le niveau de confiance selectionné.
+	 */
 	private String selectedConfiance;
-	
+
+	/**
+	 * L'ensemble des niveaux de confiances existants.
+	 */
 	private Map<String, String> listConfiance = new HashMap<String, String>();
-	
+
 	public ClientController() {
 		for (ConfList se : ConfList.values()) {
-			listConfiance. put(se.name(), se.name());
+			listConfiance.put(se.name(), se.name());
 		}
 	}
-	
+
+	/**
+	 * Modifie la confiance de l'utilisateur sélectionné par la confiance sélectionnée.
+	 * @throws MalformedURLException
+	 * @throws IOException
+	 */
 	public void selectConfiance() throws MalformedURLException, IOException {
 		int id = ConfList.valueOf(selectedClient.getConfiance().getIntitule()).ordinal() + 1;
 		String intitule = selectedClient.getConfiance().getIntitule();
@@ -60,6 +80,10 @@ public class ClientController implements Serializable  {
 		this.client = client;
 	}
 
+	/**
+	 * Créé un nouveau client et redirige vers la page de login. 
+	 * @throws IOException
+	 */
 	public void createclient() throws IOException {
 		try {
 			clientBean.createClient(client);
@@ -69,9 +93,13 @@ public class ClientController implements Serializable  {
 			FacesContext.getCurrentInstance().addMessage(null,
 					new FacesMessage("Login déjà utilisé"));
 		}
-		
+
 	}
-	
+
+	/**
+	 * Met à jour le client sélectionné.
+	 * @throws IOException
+	 */
 	public void updateclient() throws IOException {
 		clientBean.updateclient(selectedClient);
 		FacesContext.getCurrentInstance().getExternalContext()

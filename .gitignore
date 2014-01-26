@@ -4,6 +4,7 @@ build
 .idea
 .classpath
 Bourse.iml
+/src/main/webapp/WEB-INF/web.xml
 /target
 /classworlds
 /com

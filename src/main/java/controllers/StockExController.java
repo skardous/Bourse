@@ -27,38 +27,60 @@ import ejb.SEBean.SE;
 @ViewScoped
 public class StockExController implements Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	@EJB
 	private SEBean bean;
 
+	/**
+	 * Le StockExchange sélectionné.
+	 */
 	private String selectedSE;
 
+	/**
+	 * La liste de tous les StockExchange.
+	 */
 	private Map<String, String> listSE = new HashMap<String, String>();
 
+	/**
+	 * La liste des sociétés à partir d'un StockExchange.
+	 */
 	private List<Societe> companyList = new ArrayList<Societe>();
 
+	/**
+	 * La société sélectionnée.
+	 */
 	private Societe selectedCompany = new Societe();
 
+	/**
+	 * L'historique sélectionné.
+	 */
 	private List<Historique> selectedHistorique = new ArrayList<Historique>();
 
 	public StockExController() {
 		for (SE se : SE.values()) {
-			listSE. put(se.name(), se.name());
+			listSE.put(se.name(), se.name());
 		}
 	}
 
+	/**
+	 * Met à jour la liste des sociétés selon le StockExchange sélectionné.
+	 * @throws MalformedURLException
+	 * @throws IOException
+	 */
 	public void selectSE() throws MalformedURLException, IOException {
 		companyList.clear();
 		companyList = bean.getCompaniesBySE(selectedSE);
 		//companyList = requester.getCompaniesBySE(selectedSE);
 	}
 
+	/**
+	 * Met à jour l'historique de la société sélectionnée.
+	 * @throws MalformedURLException
+	 * @throws IOException
+	 */
 	public void updateSelectedHistorique() throws MalformedURLException,
-			IOException {
+	IOException {
 		selectedHistorique.clear();
 		String line = "";
 		String cvsSplitBy = ",";

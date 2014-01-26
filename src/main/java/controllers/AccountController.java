@@ -10,9 +10,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
-import model.Client;
 import model.Compte;
-import model.Utilisateur;
 import util.NegativeSoldException;
 import ejb.AccountBean;
 import ejb.SessionBean;
@@ -21,29 +19,43 @@ import ejb.SessionBean;
 @ViewScoped
 public class AccountController implements Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * La session correspondant à l'utilisateur courant.
+	 */
 	@ManagedProperty(value = "#{sessionController.session}")
 	private SessionBean session;
-	
+
+	/**
+	 * Accès au compte de l'utilisateur en session.
+	 */
 	@ManagedProperty(value = "#{sessionController.session.connectedUser.compte}")
 	private Compte compte;
-	
+
 	@EJB
 	private AccountBean bean;
 
 	private Integer creditValue;
 	private Integer debitValue;
 
+	/**
+	 * Crédite le compte de l'utilisateur en session d'un montant creditValue.
+	 * Redirige vers la page du compte de l'utilisateur courant.
+	 * @throws IOException
+	 */
 	public void crediter() throws IOException {
 		bean.crediter(compte, creditValue);
 		FacesContext.getCurrentInstance().getExternalContext()
-				.redirect("/Bourse/account/account.xhtml");
+		.redirect("/Bourse/account/account.xhtml");
 	}
 
+	/**
+	 * Débite le compte de l'utilisateur en session d'un montant debitValue.
+	 * Affiche un message d'erreur si le compte n'a pas assez d'argent.
+	 * Redirige vers la page du compte de l'utilisateur courant.
+	 * @throws IOException
+	 */
 	public void debiter() throws IOException {
 		try {
 			bean.debiter(compte, debitValue);
@@ -52,9 +64,14 @@ public class AccountController implements Serializable {
 					new FacesMessage("vous n'avez pas assez d'argent"));
 		}
 		FacesContext.getCurrentInstance().getExternalContext()
-				.redirect("/Bourse/account/account.xhtml");
+		.redirect("/Bourse/account/account.xhtml");
 	}
 
+	/**
+	 * Ferme le compte de l'utilisateur en session, puis le déconnecte.
+	 * Redirige vers la page d'accueil.
+	 * @throws IOException
+	 */
 	public void clore() throws IOException {
 		System.out.println("cloture de compte...");
 		bean.clore(compte);
@@ -62,7 +79,7 @@ public class AccountController implements Serializable {
 		session.logout();
 		System.out.println("redirection...");
 		FacesContext.getCurrentInstance().getExternalContext()
-				.redirect("/Bourse/index.xhtml");
+		.redirect("/Bourse/index.xhtml");
 	}
 
 	public Integer getCreditValue() {

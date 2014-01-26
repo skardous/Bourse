@@ -16,27 +16,25 @@ public class AdminController  {
 
 	@EJB
 	private AdminBean adminBean;
-
 	private Administrateur admin = new Administrateur();
-	
-	
 
-
+	/**
+	 * Lance la création de l'administrateur et redirige vers
+	 * la page de login.
+	 * @throws IOException
+	 */
 	public void createAdmin() throws IOException {
 		adminBean.createAdmin(admin);
 		FacesContext.getCurrentInstance().getExternalContext()
 		.redirect("/Bourse/login/login.xhtml");
 	}
 
-
 	public Administrateur getAdmin() {
 		return admin;
 	}
 
-
 	public void setAdmin(Administrateur admin) {
 		this.admin = admin;
 	}
-
 
 }

@@ -19,9 +19,6 @@ import ejb.utils.CSVRequests;
 @SessionScoped
 public class SessionController implements Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -29,13 +26,17 @@ public class SessionController implements Serializable {
 	 */
 	@EJB
 	private SessionBean session;
-	
+
 	@EJB
 	private CSVRequests requester;
 
 	private String username;
 	private String password;
 
+	/**
+	 * Ouvre une nouvelle session à partir des identifiants renseignés.
+	 * @throws IOException
+	 */
 	public void login() throws IOException {
 		try {
 			session.login(username, password);
@@ -49,7 +50,11 @@ public class SessionController implements Serializable {
 					new FacesMessage("Ce compte a été fermé"));
 		}
 	}
-	
+
+	/**
+	 * Ferme la session en cours.
+	 * @throws IOException
+	 */
 	public void logout() throws IOException {
 		session.logout();
 		FacesContext.getCurrentInstance().getExternalContext()
