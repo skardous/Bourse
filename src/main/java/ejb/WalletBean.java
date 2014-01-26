@@ -78,15 +78,37 @@ public class WalletBean implements Serializable {
 
 		boolean alreadyOwner = false;
 		for (Action a : p.getActions()) {
-			if (a.getSociete().getCode().equals(code)) {
+			if (a.getSociete().getCode().equals(code)) { //Si nous possédons déjà des actions de cette société
 				alreadyOwner = true;
 				a.setNumber(a.getNumber() + number);
 				shareService.update(a);
 			}
 		}
+		
 		if (!alreadyOwner) {
 			Action a = new Action(number, c, p);
 			p.getActions().add(a);
+		}
+		
+		for (Speculation spec : p.getSpectulations()) {
+			if (spec.getSociete().getCode().equals(code)) { //Si nous avons spéculé à la baisse sur cette action
+				spec.setNumber(spec.getNumber() - number);
+				if (spec.getNumber() == 0) {
+					p.getSpectulations().remove(spec);
+					specService.delete(spec.getId());
+					break;
+				} else {
+					if (spec.getNumber() < 0) {
+						p.getSpectulations().remove(spec);
+						specService.delete(spec.getId());
+						number = number + spec.getNumber();
+					} else {
+						specService.update(spec);
+						break;
+					}
+				}
+				
+			}
 		}
 
 		service.update(p);

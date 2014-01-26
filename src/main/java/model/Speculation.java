@@ -5,12 +5,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
-/**
- * Created with IntelliJ IDEA. User: thiergeo Date: 27/11/13 Time: 12:47 To
- * change this template use File | Settings | File Templates.
- */
-// Pas sur de ça
-// @Embeddable
 @Entity
 public class Speculation {
 
@@ -29,7 +23,6 @@ public class Speculation {
 	private int number;
 
 	public Speculation() {
-
 	}
 
 	public Speculation(int number, double valeurVente, Societe societe, Portefeuille portefeuille) {
@@ -80,6 +73,14 @@ public class Speculation {
 
 	public void setValeurVente(double valeurVente) {
 		this.valeurVente = valeurVente;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 }
