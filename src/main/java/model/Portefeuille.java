@@ -1,27 +1,22 @@
 package model;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
-/**
- * Created with IntelliJ IDEA.
- * User: thiergeo
- * Date: 27/11/13
- * Time: 12:44
- * To change this template use File | Settings | File Templates.
- */
 @Entity
 public class Portefeuille {
     @Id
     @GeneratedValue
     private int id;
     
-    //@Embedded // Pas sur
-    @OneToMany(mappedBy="portefeuille")
+    @OneToMany(mappedBy="portefeuille") 
     private List<Action> actions;
     
     @OneToMany(mappedBy="portefeuille")
@@ -45,7 +40,34 @@ public class Portefeuille {
     	}
     	return value;
     }
-
+    
+    public List<Action> getActionsGroupedByCompany() {
+    	Map<String, Action> group = new HashMap<String, Action>();  
+    	  
+    	for (Action a : actions) {  
+    	    String company=a.getSociete().getCode();  
+    	    if (group.containsKey(company)) {
+    	        int number = group.get(company).getNumber();  
+    	        double gains = Double.parseDouble(group.get(company).getGains());
+    	        number = number + a.getNumber();  
+    	        gains = gains + Double.parseDouble(a.getGains());
+    	        Action tempact = new Action(number, a.getSociete(), this);
+    	        tempact.setGains(String.valueOf(gains));
+    	        tempact.setValeurAchat(Double.parseDouble(a.getSociete().getValeur()) - gains);
+    	        group.put(company, tempact);  
+    	    }else{  
+    	    	group.put(company, a); 
+    	    }    	  
+    	}
+    	
+    	List<Action> list = new ArrayList<Action>();
+    	for (Action ac : group.values()) {
+    		list.add(ac);
+    	}
+    	
+    	return list;
+    }
+    
     public List<Action> getActions() {
         return actions;
     }
@@ -60,5 +82,10 @@ public class Portefeuille {
 
 	public void setSpectulations(List<Speculation> spectulations) {
 		this.spectulations = spectulations;
+	}
+
+
+	public void setId(int id) {
+		this.id = id;
 	}
 }

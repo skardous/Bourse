@@ -50,7 +50,7 @@ public class TimedTaskManager {
 		// if (confianceService.find(2) == null) {
 		// confianceService.create(p);
 		// }
-		System.out.println("initDB");
+		System.out.println("initDB"); 
 	}
 
 }

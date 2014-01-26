@@ -30,8 +30,8 @@ import util.NegativeSoldException;
 public class WalletBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
-	private static double COMMISSION = 0.5/100;
+
+	private static double COMMISSION = 0.5 / 100;
 
 	/**
 	 * EJB d'accès à la persistance
@@ -47,7 +47,7 @@ public class WalletBean implements Serializable {
 
 	@EJB
 	private ShareService shareService;
-	
+
 	@EJB
 	private SpeculationService specService;
 
@@ -74,24 +74,18 @@ public class WalletBean implements Serializable {
 		Societe c = compService.findCompanyByCode(code);
 
 		accService.debiter(cpt, Double.parseDouble(c.getValeur()) * number);
-		accService.debiter(cpt, (COMMISSION * Double.parseDouble(c.getValeur())) * number);
+		accService.debiter(cpt,
+				(COMMISSION * Double.parseDouble(c.getValeur())) * number);
 
-		boolean alreadyOwner = false;
-		for (Action a : p.getActions()) {
-			if (a.getSociete().getCode().equals(code)) { //Si nous possédons déjà des actions de cette société
-				alreadyOwner = true;
-				a.setNumber(a.getNumber() + number);
-				shareService.update(a);
-			}
-		}
-		
-		if (!alreadyOwner) {
-			Action a = new Action(number, c, p);
-			p.getActions().add(a);
-		}
-		
+		Action a = new Action(number, c, p);
+		a.setValeurAchat(Double.parseDouble(c.getValeur()));
+		p.getActions().add(a);
+
 		for (Speculation spec : p.getSpectulations()) {
-			if (spec.getSociete().getCode().equals(code)) { //Si nous avons spéculé à la baisse sur cette action
+			if (spec.getSociete().getCode().equals(code)) { // Si nous avons
+															// spéculé à la
+															// baisse sur cette
+															// action
 				spec.setNumber(spec.getNumber() - number);
 				if (spec.getNumber() == 0) {
 					p.getSpectulations().remove(spec);
@@ -107,7 +101,7 @@ public class WalletBean implements Serializable {
 						break;
 					}
 				}
-				
+
 			}
 		}
 
@@ -118,9 +112,10 @@ public class WalletBean implements Serializable {
 	 * @param p
 	 * @param share
 	 * @param number
-	 * @param cpt	Compte qui sera débité
+	 * @param cpt
+	 *            Compte qui sera débité
 	 * @throws NegativeActionNumberException
-	 * @throws NegativeSoldException 
+	 * @throws NegativeSoldException
 	 */
 	public void orderSale(Portefeuille p, Action share, int number, Compte cpt)
 			throws NegativeActionNumberException, NegativeSoldException {
@@ -128,28 +123,30 @@ public class WalletBean implements Serializable {
 		s.sell(number);
 		if (s.getNumber() == 0) {
 			p.getActions().remove(s);
-			shareService.delete(s.getSociete().getCode());
+			shareService.delete(s.getId());
 		} else {
 			shareService.update(s);
 		}
 		service.update(p);
 		accService.crediter(cpt, Double.parseDouble(s.getSociete().getValeur())
 				* number);
-		accService.debiter(cpt, (COMMISSION * Double.parseDouble(s.getSociete().getValeur())) * number);
+		accService.debiter(cpt,
+				(COMMISSION * Double.parseDouble(s.getSociete().getValeur()))
+						* number);
 	}
 
-	public void orderSpeculativeSale(Portefeuille p,
-			String code, int number, Compte cpt) throws NumberFormatException, NegativeSoldException {
+	public void orderSpeculativeSale(Portefeuille p, String code, int number,
+			Compte cpt) throws NumberFormatException, NegativeSoldException {
 		Societe c = compService.findCompanyByCode(code);
-		
-		accService.debiter(cpt, (COMMISSION * Double.parseDouble(c.getValeur())) * number);
-		Speculation s = new Speculation(number,Double.parseDouble(c.getValeur()), c, p);
-		p.getSpectulations().add(s);		
 
-		service.update(p);	
-		
+		accService.debiter(cpt,
+				(COMMISSION * Double.parseDouble(c.getValeur())) * number);
+		Speculation s = new Speculation(number, Double.parseDouble(c
+				.getValeur()), c, p);
+		p.getSpectulations().add(s);
+
+		service.update(p);
+
 	}
-
-	
 
 }

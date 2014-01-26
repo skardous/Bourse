@@ -1,49 +1,62 @@
 <!DOCTYPE html>
-<html lang="en"
-     xmlns="http://www.w3.org/1999/xhtml"
-     xmlns:f="http://java.sun.com/jsf/core"
-     xmlns:h="http://java.sun.com/jsf/html"
-     xmlns:ui="http://java.sun.com/jsf/facelets"
-     xmlns:p="http://primefaces.org/ui"
-     xmlns:c="http://java.sun.com/jsp/jstl/core"
->
-    <h:head>
-        <title>Bourse</title>
-        <h:outputStylesheet library="css" name="default.css"  />
-    </h:head>
-    <h:body>
-        <p:layout fullPage="true">
-        	<c:if test="#{sessionController.session.connectedUser != null}">
-            <p:layoutUnit position="north" size="75" header="User : #{sessionController.session.connectedUser.username}" resizable="false" closable="false" collapsible="false">
-                <h:outputText value="" />
-            </p:layoutUnit>
-            </c:if>
-            <c:if test="#{sessionController.session.connectedUser == null}">
-            <p:layoutUnit position="north" size="75" header="Non connecté" resizable="false" closable="false" collapsible="false">
-                <p:commandButton value="Se connecter"
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+<h:head>
+	<title>Bourse</title>
+	<h:outputStylesheet library="css" name="default.css" />
+</h:head>
+<h:body>
+	<p:layout fullPage="true">
+		<c:if test="#{sessionController.session.connectedUser != null}">
+			<c:if test="#{sessionController.session.connectedUser.isAdmin()}">
+				<p:layoutUnit position="north" size="75"
+					header="Administrateur connecté : #{sessionController.session.connectedUser.username}"
+					resizable="false" closable="false" collapsible="false">
+					<h:outputText value="" />
+				</p:layoutUnit>
+			</c:if>
+			<c:if
+				test="#{sessionController.session.connectedUser.isAdmin() == false}">
+				<p:layoutUnit position="north" size="75"
+					header="Utilisateur connecté : #{sessionController.session.connectedUser.username}"
+					resizable="false" closable="false" collapsible="false">
+					<h:outputText value="" />
+				</p:layoutUnit>
+			</c:if>
+		</c:if>
+		<c:if test="#{sessionController.session.connectedUser == null}">
+			<p:layoutUnit position="north" size="75" header="Non connecté"
+				resizable="false" closable="false" collapsible="false">
+				<p:commandButton value="Se connecter"
 					action="/login/login.xhtml?faces-redirect=true"
 					icon="ui-icon-power" />
 				<p:commandButton value="Créer un compte"
 					action="/login/newAccount.xhtml?faces-redirect=true"
 					icon="ui-icon-power" />
-            </p:layoutUnit>
-            </c:if>
+			</p:layoutUnit>
+		</c:if>
 
-            <!-- <p:layoutUnit position="south" size="100" header="Bottom" resizable="true" closable="true" collapsible="true">
+		<!-- <p:layoutUnit position="south" size="100" header="Bottom" resizable="true" closable="true" collapsible="true">
                 <h:outputText value="South unit content." />
             </p:layoutUnit> -->
 
-            <p:layoutUnit position="west" style="z-index:1 !important" size="200" header="Menu" resizable="false" closable="false" collapsible="false" >
-                    <ui:include src="../templates/tiles/LeftMenu.xhtml" />
-            </p:layoutUnit>
+		<p:layoutUnit position="west" style="z-index:1 !important" size="200"
+			header="Menu" resizable="false" closable="false" collapsible="false">
+			<ui:include src="../templates/tiles/LeftMenu.xhtml" />
+		</p:layoutUnit>
 
-            <p:layoutUnit position="east" size="200" header="Help" resizable="true" closable="true" collapsible="true" effect="drop">
-                <h:outputText value="Right unit content." />
-            </p:layoutUnit>
+		<p:layoutUnit position="east" size="200" header="Help"
+			resizable="true" closable="true" collapsible="true" effect="drop">
+			<h:outputText value="Right unit content." />
+		</p:layoutUnit>
 
-            <p:layoutUnit position="center" style="overflow:auto !important">
-                <ui:insert name="content">Put default content here, if any.</ui:insert>
-            </p:layoutUnit>
-        </p:layout>
-    </h:body>
+		<p:layoutUnit position="center" style="overflow:auto !important">
+			<ui:insert name="content">Put default content here, if any.</ui:insert>
+		</p:layoutUnit>
+	</p:layout>
+</h:body>
 </html>

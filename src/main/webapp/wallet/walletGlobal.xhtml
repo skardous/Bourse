@@ -17,7 +17,7 @@
 
 		<p:panel header="Actions possédées" style="margin-bottom:10px;">
 			<p:dataTable id="shareTable" var="action"
-				value="#{walletController.wallet.actions}" sortMode="multiple"
+				value="#{walletController.wallet.getActionsGroupedByCompany()}" sortMode="multiple"
 				rows="10" paginator="true">
 
 				<p:column sortBy="societe.nom" headerText="Societé">
@@ -34,6 +34,10 @@
 
 				<p:column sortBy="getTotalValue()" headerText="Valeur totale">
 					<h:outputText value="#{action.getTotalValue()}" />
+				</p:column>
+				
+				<p:column sortBy="getTotalValue()" headerText="Gains/Pertes">
+					<h:outputText value="#{action.gains}" />
 				</p:column>
 			</p:dataTable>
 		</p:panel>

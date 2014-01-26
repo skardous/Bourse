@@ -1,6 +1,7 @@
 package model;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
@@ -10,6 +11,9 @@ import util.NegativeActionNumberException;
 public class Action {
 
 	@Id
+	@GeneratedValue
+	private int id;
+	
 	@ManyToOne
 	private Societe societe;
 
@@ -19,6 +23,8 @@ public class Action {
 	private int number;
 	
 	private double valeurAchat; 
+
+	private String gains; 
 
 	public Action() {
 
@@ -78,6 +84,23 @@ public class Action {
 
 	public void setValeurAchat(double valeurAchat) {
 		this.valeurAchat = valeurAchat;
+	}
+	
+	public String getGains() {
+		gains = String.valueOf(Double.parseDouble(societe.getValeur()) - valeurAchat);
+		return gains;
+	}
+
+	public void setGains(String gains) {
+		this.gains = gains;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 }
