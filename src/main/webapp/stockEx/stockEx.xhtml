@@ -12,7 +12,7 @@
 
 			<p:panel header="Selectionnez une bourse" style="margin-bottom:10px;">
 				<h:panelGrid columns="2" cellpadding="5">
-					<p:selectOneMenu id="city" value="#{stockExController.selectedSE}">
+					<p:selectOneMenu id="SE" value="#{stockExController.selectedSE}">
 						<f:selectItem itemLabel="Selectionnez une bourse" itemValue="" />
 						<f:selectItems value="#{stockExController.listSE}" />
 						<p:ajax update="companyTable"
@@ -23,10 +23,11 @@
 
 			<p:panel header="Liste des sociétés" style="margin-bottom:10px;">
 				<p:dataTable id="companyTable" var="societe"
-					value="#{stockExController.companyList}" sortMode="multiple"
+					value="#{stockExController.companyList}" filteredValue="#{stockExController.filteredCompanies}" sortMode="multiple"
 					rows="25" paginator="true">
 
-					<p:column sortBy="code" headerText="Code">
+					<p:column sortBy="code" headerText="Code" filterBy="code"						
+						filterMatchMode="contains">
 						<p:commandLink value="#{societe.code}" update=":companyHistory"
 							oncomplete="historyDialog.show()" title="View">
 							<f:setPropertyActionListener value="#{societe}"
@@ -34,11 +35,13 @@
 						</p:commandLink>
 					</p:column>
 
-					<p:column sortBy="nom" headerText="Nom">
+					<p:column sortBy="nom" headerText="Nom" filterBy="nom"						
+						filterMatchMode="contains">
 						<h:outputText value="#{societe.nom}" />
 					</p:column>
 
-					<p:column sortBy="valeur" headerText="Cours actuel">
+					<p:column sortBy="valeur" headerText="Cours actuel" filterBy="valeur"						
+						filterMatchMode="contains">
 						<h:outputText value="#{societe.valeur}" />
 					</p:column>
 				</p:dataTable>

@@ -5,7 +5,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Serializable;
+import java.net.Authenticator;
 import java.net.MalformedURLException;
+import java.net.PasswordAuthentication;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -46,6 +48,8 @@ public class StockExController implements Serializable {
 	 * La liste des sociétés à partir d'un StockExchange.
 	 */
 	private List<Societe> companyList = new ArrayList<Societe>();
+	
+	private List<Societe> filteredCompanies;  
 
 	/**
 	 * La société sélectionnée.
@@ -71,6 +75,7 @@ public class StockExController implements Serializable {
 	public void selectSE() throws MalformedURLException, IOException {
 		companyList.clear();
 		companyList = bean.getCompaniesBySE(selectedSE);
+		filteredCompanies = bean.getCompaniesBySE(selectedSE);
 		//companyList = requester.getCompaniesBySE(selectedSE);
 	}
 
@@ -86,6 +91,21 @@ public class StockExController implements Serializable {
 		String cvsSplitBy = ",";
 
 		if (selectedCompany.getCode() != null) {
+			final String authUser = "kardosim";
+			final String authPassword = "cemen123";
+
+			System.setProperty("http.proxyHost", "charon.olympe");
+			System.setProperty("http.proxyPort", "3128");
+			System.setProperty("http.proxyUser", authUser);
+			System.setProperty("http.proxyPassword", authPassword);
+
+			Authenticator.setDefault(
+			  new Authenticator() {
+			    public PasswordAuthentication getPasswordAuthentication() {
+			      return new PasswordAuthentication(authUser, authPassword.toCharArray());
+			    }
+			  }
+			);
 			Calendar c = new GregorianCalendar();
 			InputStream input = new URL(
 					"http://ichart.finance.yahoo.com/table.csv?s="
@@ -155,6 +175,14 @@ public class StockExController implements Serializable {
 
 	public void setSelectedHistorique(List<Historique> selectedHistorique) {
 		this.selectedHistorique = selectedHistorique;
+	}
+
+	public List<Societe> getFilteredCompanies() {
+		return filteredCompanies;
+	}
+
+	public void setFilteredCompanies(List<Societe> filteredCompanies) {
+		this.filteredCompanies = filteredCompanies;
 	}
 
 }

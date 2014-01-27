@@ -4,7 +4,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.Authenticator;
 import java.net.MalformedURLException;
+import java.net.PasswordAuthentication;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +35,22 @@ public class CSVRequests {
 		List<Societe> companyList = new ArrayList<Societe>();
 		String line = "";
 		String cvsSplitBy = "\",\"";
+		final String authUser = "kardosim";
+		final String authPassword = "cemen123";
+
+		System.setProperty("http.proxyHost", "charon.olympe");
+		System.setProperty("http.proxyPort", "3128");
+		System.setProperty("http.proxyUser", authUser);
+		System.setProperty("http.proxyPassword", authPassword);
+
+		Authenticator.setDefault(
+		  new Authenticator() {
+		    public PasswordAuthentication getPasswordAuthentication() {
+		      return new PasswordAuthentication(authUser, authPassword.toCharArray());
+		    }
+		  }
+		);
+		
 		InputStream input = new URL(
 				"http://www.nasdaq.com/screening/companies-by-industry.aspx?exchange="
 						+ se + "&render=download").openStream();
