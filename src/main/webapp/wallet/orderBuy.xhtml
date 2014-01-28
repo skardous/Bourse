@@ -8,10 +8,16 @@
 	<ui:define name="content">
 		<p:panel header="Solde">
 			<h:outputText
-				value="#{sessionController.session.connectedUser.compte.solde}"></h:outputText>
+				value="#{sessionController.session.connectedUser.compte.solde}">
+				<f:convertNumber type="currency" currencySymbol="$" pattern="¤#0.00"
+					locale="fr_FR" />
+			</h:outputText>
 		</p:panel>
 		<p:panel header="Valeur du portefeuille">
-			<h:outputText value="#{walletController.wallet.valeur}"></h:outputText>
+			<h:outputText value="#{walletController.wallet.valeur}">
+				<f:convertNumber type="currency" currencySymbol="$" pattern="¤#0.00"
+					locale="fr_FR" />
+			</h:outputText>
 		</p:panel>
 		<p:panel header="Ordre d'achat">
 			<h:form>
@@ -38,7 +44,7 @@
 				<p:column sortBy="number" headerText="Nombre d'actions">
 					<h:outputText value="#{speculation.number}" />
 				</p:column>
-				
+
 				<p:column sortBy="societe.nom" headerText="Cours de vente">
 					<h:outputText value="#{speculation.valeurVente}" />
 				</p:column>
@@ -47,8 +53,12 @@
 					<h:outputText value="#{speculation.societe.valeur}" />
 				</p:column>
 
-				<p:column sortBy="societe.valeur" headerText="Gain (si achat immédiat)">
-					<h:outputText value="#{speculation.getGains()}" />
+				<p:column sortBy="societe.valeur"
+					headerText="Gain (si achat immédiat)">
+					<h:outputText value="#{speculation.getGains()}">
+						<f:convertNumber type="currency" currencySymbol="$"
+							pattern="¤#0.00" locale="fr_FR" />
+					</h:outputText>
 				</p:column>
 			</p:dataTable>
 		</p:panel>

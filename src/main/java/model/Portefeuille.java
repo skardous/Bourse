@@ -48,9 +48,9 @@ public class Portefeuille {
     	    String company=a.getSociete().getCode();  
     	    if (group.containsKey(company)) {
     	        int number = group.get(company).getNumber();  
-    	        double gains = Double.parseDouble(group.get(company).getGains());
+    	        double gains = group.get(company).getGains();
     	        number = number + a.getNumber();  
-    	        gains = gains + Double.parseDouble(a.getGains());
+    	        gains = gains + a.getGains();
     	        Action tempact = new Action(number, a.getSociete(), this);
     	        tempact.setGains(String.valueOf(gains));
     	        tempact.setValeurAchat(Double.parseDouble(a.getSociete().getValeur()) - gains);

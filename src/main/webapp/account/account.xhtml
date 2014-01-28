@@ -7,7 +7,9 @@
 
 	<ui:define name="content">
 		<p:panel header="Solde">
-				<h:outputText value="#{sessionController.session.connectedUser.compte.solde}"></h:outputText>
+			<h:outputText value="#{sessionController.session.connectedUser.compte.solde}">
+			    <f:convertNumber type="currency" currencySymbol="$" pattern="¤#0.00" locale="fr_FR"/>
+			</h:outputText>
 		</p:panel>
 		<p:panel header="Créditer">
 			<h:form>

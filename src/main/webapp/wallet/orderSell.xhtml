@@ -9,10 +9,16 @@
 	<ui:define name="content">
 		<p:panel header="Solde">
 			<h:outputText
-				value="#{sessionController.session.connectedUser.compte.solde}"></h:outputText>
+				value="#{sessionController.session.connectedUser.compte.solde}">
+				<f:convertNumber type="currency" currencySymbol="$" pattern="¤#0.00"
+					locale="fr_FR" />
+			</h:outputText>
 		</p:panel>
 		<p:panel header="Valeur du portefeuille">
-			<h:outputText value="#{walletController.wallet.valeur}"></h:outputText>
+			<h:outputText value="#{walletController.wallet.valeur}">
+				<f:convertNumber type="currency" currencySymbol="$" pattern="¤#0.00"
+					locale="fr_FR" />
+			</h:outputText>
 		</p:panel>
 
 		<p:panel header="Actions possédées" style="margin-bottom:10px;">
@@ -46,7 +52,10 @@
 					</p:column>
 
 					<p:column sortBy="getTotalValue()" headerText="Valeur totale">
-						<h:outputText value="#{action.getTotalValue()}" />
+						<h:outputText value="#{action.getTotalValue()}">
+							<f:convertNumber type="currency" currencySymbol="$"
+								pattern="¤#0.00" locale="fr_FR" />
+						</h:outputText>
 					</p:column>
 				</p:dataTable>
 			</h:form>
@@ -60,15 +69,14 @@
 				<h:form id="sellSpecForm">
 					<p>
 						<h:outputText value="Code de la société : "></h:outputText>
-						<p:inputText
-							value="#{walletController.orderCompanyCode}">
+						<p:inputText value="#{walletController.orderCompanyCode}">
 						</p:inputText>
 					</p>
 					<p>
 						<h:outputText value="Quantité : "></h:outputText>
 						<p:inputText value="#{walletController.orderNumber}">
 						</p:inputText>
-					</p>					
+					</p>
 					<p:commandButton value="Vendre" update=":growl"
 						actionListener="#{walletController.orderSpeculativeSale}" />
 				</h:form>

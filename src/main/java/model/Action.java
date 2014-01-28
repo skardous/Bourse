@@ -86,9 +86,10 @@ public class Action {
 		this.valeurAchat = valeurAchat;
 	}
 	
-	public String getGains() {
-		gains = String.valueOf(Double.parseDouble(societe.getValeur()) - valeurAchat);
-		return gains;
+	public double getGains() {
+		return Double.parseDouble(societe.getValeur()) - valeurAchat;
+		/*gains = String.valueOf(Double.parseDouble(societe.getValeur()) - valeurAchat);
+		return gains;*/
 	}
 
 	public void setGains(String gains) {
