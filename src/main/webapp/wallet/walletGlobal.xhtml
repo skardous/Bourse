@@ -44,14 +44,14 @@
 
 				<p:column sortBy="getTotalValue()" headerText="Gains/Pertes">
 					<h:outputText value="#{action.gains}">
-						<f:convertNumber type="currency" currencySymbol="$" pattern="¤#0.00"
-					locale="fr_FR" />
+						<f:convertNumber type="currency" currencySymbol="$"
+							pattern="¤#0.00" locale="fr_FR" />
 					</h:outputText>
 				</p:column>
 			</p:dataTable>
 		</p:panel>
 
-		<p:panel
+		<p:panel rendered="#{walletController.hasObligations()}"
 			header="Valeur des obligations (prix à payer en cas de vente immédiate)">
 			<h:outputText value="#{walletController.getObligationsTotal()}">
 				<f:convertNumber type="currency" currencySymbol="$" pattern="¤#0.00"
@@ -59,9 +59,10 @@
 			</h:outputText>
 		</p:panel>
 
-		<p:panel header="Obligations d'achat" style="margin-bottom:10px;">
+		<p:panel rendered="#{walletController.hasObligations()}"
+			header="Obligations d'achat" style="margin-bottom:10px;">
 			<p:dataTable id="specTable" var="speculation"
-				value="#{walletController.wallet.spectulations}" sortMode="multiple"
+				value="#{walletController.wallet.speculations}" sortMode="multiple"
 				rows="10" paginator="true">
 
 				<p:column sortBy="societe.nom" headerText="Societé">

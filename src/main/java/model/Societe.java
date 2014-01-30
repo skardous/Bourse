@@ -73,6 +73,13 @@ public class Societe {
 		return valeur;
 	}
 
+	public double getValeurNombre() {
+		if (valeur.equals("n/a")) {
+			return 0;
+		}
+		return Double.parseDouble(valeur);
+	}
+	
 	public void setValeur(String valeur) {
 		this.valeur = valeur;
 	}

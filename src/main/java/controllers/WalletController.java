@@ -80,12 +80,16 @@ public class WalletController implements Serializable {
 	
 	public double getObligationsTotal() {
 		double total = 0;
-		for (Speculation s : wallet.getSpectulations()) {
+		for (Speculation s : wallet.getSpeculations()) {
 			total += s.getTotalValue() - s.getGains();
 		}
 		return total;
 	}
 
+	public boolean hasObligations() {
+		return getObligationsTotal() > 0;
+	}
+	
 	public String getOrderCompanyCode() {
 		return orderCompanyCode;
 	}

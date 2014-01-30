@@ -81,19 +81,19 @@ public class WalletBean implements Serializable {
 		a.setValeurAchat(Double.parseDouble(c.getValeur()));
 		p.getActions().add(a);
 
-		for (Speculation spec : p.getSpectulations()) {
+		for (Speculation spec : p.getSpeculations()) {
 			if (spec.getSociete().getCode().equals(code)) { // Si nous avons
 															// spéculé à la
 															// baisse sur cette
 															// action
 				spec.setNumber(spec.getNumber() - number);
 				if (spec.getNumber() == 0) {
-					p.getSpectulations().remove(spec);
+					p.getSpeculations().remove(spec);
 					specService.delete(spec.getId());
 					break;
 				} else {
 					if (spec.getNumber() < 0) {
-						p.getSpectulations().remove(spec);
+						p.getSpeculations().remove(spec);
 						specService.delete(spec.getId());
 						number = number + spec.getNumber();
 					} else {
@@ -143,7 +143,7 @@ public class WalletBean implements Serializable {
 				(COMMISSION * Double.parseDouble(c.getValeur())) * number);
 		Speculation s = new Speculation(number, Double.parseDouble(c
 				.getValeur()), c, p);
-		p.getSpectulations().add(s);
+		p.getSpeculations().add(s);
 
 		service.update(p);
 

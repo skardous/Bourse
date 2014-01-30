@@ -20,7 +20,7 @@ public class Portefeuille {
     private List<Action> actions;
     
     @OneToMany(mappedBy="portefeuille")
-    private List<Speculation> spectulations;
+    private List<Speculation> speculations;
     
     public Portefeuille() {
     }
@@ -48,9 +48,9 @@ public class Portefeuille {
     	    String company=a.getSociete().getCode();  
     	    if (group.containsKey(company)) {
     	        int number = group.get(company).getNumber();  
-    	        double gains = group.get(company).getGains();
+    	        double gains = group.get(company).getGainsNombre();
     	        number = number + a.getNumber();  
-    	        gains = gains + a.getGains();
+    	        gains = gains + a.getGainsNombre();
     	        Action tempact = new Action(number, a.getSociete(), this);
     	        tempact.setGains(String.valueOf(gains));
     	        tempact.setValeurAchat(Double.parseDouble(a.getSociete().getValeur()) - gains);
@@ -76,12 +76,12 @@ public class Portefeuille {
         this.actions = actions;
     }
 
-	public List<Speculation> getSpectulations() {
-		return spectulations;
+	public List<Speculation> getSpeculations() {
+		return speculations;
 	}
 
-	public void setSpectulations(List<Speculation> spectulations) {
-		this.spectulations = spectulations;
+	public void setSpectulations(List<Speculation> speculations) {
+		this.speculations = speculations;
 	}
 
 

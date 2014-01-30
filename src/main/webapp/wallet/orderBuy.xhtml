@@ -32,9 +32,10 @@
 					actionListener="#{walletController.orderBuy}" />
 			</h:form>
 		</p:panel>
-		<p:panel header="Obligations d'achat" style="margin-bottom:10px;">
+		<p:panel rendered="#{walletController.hasObligations()}"
+			header="Obligations d'achat" style="margin-bottom:10px;">
 			<p:dataTable id="shareTable" var="speculation"
-				value="#{walletController.wallet.spectulations}" sortMode="multiple"
+				value="#{walletController.wallet.speculations}" sortMode="multiple"
 				rows="10" paginator="true">
 
 				<p:column sortBy="societe.nom" headerText="Societé">

@@ -24,6 +24,10 @@
 				<h:outputText value="#{client.username}" />
 			</p:column>
 
+			<p:column headerText="Statut du compte">
+				<h:outputText value="#{client.compte.status}" />
+			</p:column>
+
 			<p:column sortBy="client.confiance.intitule"
 				headerText="Niv. de confiance">
 				<h:outputText value="#{client.confiance.intitule}" />
@@ -68,12 +72,6 @@
 						required="true" requiredMessage="Entrez un login!" message="fc">
 						<f:validateLength minimum="1" />
 					</p:inputText>
-					<h:outputText value="Mot de passe : "></h:outputText>
-					<p:password value="#{clientController.selectedClient.password}"
-						required="true" requiredMessage="Entrez un mot de passe!"
-						message="fc">
-						<f:validateLength minimum="1" />
-					</p:password>
 					<h:outputText value="Confiance : "></h:outputText>
 					<p:selectOneMenu id="confiance" value="#{clientController.selectedClient.confiance.intitule}">						
 						<f:selectItems value="#{clientController.listConfiance}" />
@@ -86,6 +84,7 @@
 							icon="ui-icon-check" style="margin:0"></p:commandButton>
 					</f:facet>
 				</p:panelGrid>
+				<h:inputHidden value="#{clientController.selectedClient.password}" />
 			</h:form>
 		</p:dialog>
 

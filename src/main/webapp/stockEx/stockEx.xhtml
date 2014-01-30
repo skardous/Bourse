@@ -40,9 +40,12 @@
 						<h:outputText value="#{societe.nom}" />
 					</p:column>
 
-					<p:column sortBy="valeur" headerText="Cours actuel" filterBy="valeur"						
+					<p:column sortBy="valeurNombre" headerText="Cours actuel" filterBy="valeurNombre"						
 						filterMatchMode="contains">
-						<h:outputText value="#{societe.valeur}" />
+						<h:outputText value="#{societe.valeurNombre}">
+							<f:convertNumber type="currency" currencySymbol="$" pattern="¤#0.00"
+					locale="fr_FR" />
+						</h:outputText>
 					</p:column>
 				</p:dataTable>
 			</p:panel>

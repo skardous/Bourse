@@ -56,4 +56,8 @@ public class Compte {
 	public void setOpen(boolean open) {
 		this.open = open;
 	}
+	
+	public String getStatus() {
+		return this.open == true ? "Ouvert" : "Fermé";
+	}
 }
