@@ -21,12 +21,21 @@ public class Bourse {
 
 	public final static String findSEByName = "Bourse.findsebyname";
 	
+	/**
+	 * ID de la bourse
+	 */
     @Id
     @GeneratedValue
     private int id;
 
+    /**
+     * Le nom de la bourse
+     */
     private String nom;
     
+    /**
+     * La liste de sociétés appartenant à cette bourse
+     */
     @OneToMany(mappedBy="bourse")
     private List<Societe> societes;
     

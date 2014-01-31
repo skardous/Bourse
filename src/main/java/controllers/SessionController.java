@@ -27,10 +27,20 @@ public class SessionController implements Serializable {
 	@EJB
 	private SessionBean session;
 
+	/**
+	 * EJB pour mettre à jour la base de données en temps réél.
+	 */
 	@EJB
 	private CSVRequests requester;
 
+	/**
+	 * Le login de l'utilisateur
+	 */
 	private String username;
+	
+	/**
+	 * Le mot de passe de l'utilisateur
+	 */
 	private String password;
 
 	/**

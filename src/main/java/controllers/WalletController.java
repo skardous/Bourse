@@ -26,21 +26,42 @@ public class WalletController implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * Le portefeuille du client en session.
+	 */
 	@ManagedProperty(value = "#{sessionController.session.connectedUser.portefeuille}")
 	private Portefeuille wallet;
 
+	/**
+	 * Le compte du client en session.
+	 */
 	@ManagedProperty(value = "#{sessionController.session.connectedUser.compte}")
 	private Compte compte;
 
+	/**
+	 * Le bean du portefeuille.
+	 */
 	@EJB
 	private WalletBean bean;
 
+	/**
+	 * Le code de la société du titre acheté
+	 */
 	private String orderCompanyCode;
+	
+	/**
+	 * Le nombre d'ordres d'achat ou de vente passés.
+	 */
 	private int orderNumber;
 	private Action selectedShare;
 	
-
-
+	/**
+	 * Traite un ordre d'achat de titre d'une société. Redirige vers
+	 * le récapitulatif du portefeuille en cas de succès.
+	 * @throws UnknownObjectException
+	 * @throws MalformedURLException
+	 * @throws IOException
+	 */
 	public void orderBuy() throws UnknownObjectException,
 			MalformedURLException, IOException {
 		try {
@@ -53,6 +74,10 @@ public class WalletController implements Serializable {
 		}
 	}
 
+	/**
+	 * Traite la vente d'actions de la part du client.
+	 * @throws IOException
+	 */
 	public void orderSale() throws IOException {
 		try {
 			bean.orderSale(wallet, selectedShare, orderNumber, compte);
@@ -60,13 +85,17 @@ public class WalletController implements Serializable {
 			.redirect("/Bourse/wallet/orderSell.xhtml");
 		} catch (NegativeActionNumberException e) {
 			FacesContext.getCurrentInstance().addMessage(null,
-					new FacesMessage("Vous ne possédez pas un tel nombre d'actions !!"));
+					new FacesMessage("Vous ne possédez pas un tel nombre d'actions."));
 		} catch (NegativeSoldException e) {
 			FacesContext.getCurrentInstance().addMessage(null,
 					new FacesMessage("Vous n'avez pas assez d'argent (commission bancaire)"));
 		}		
 	} 
 	
+	/**
+	 * Traite la vente à la speculation d'actions.
+	 * @throws IOException
+	 */
 	public void orderSpeculativeSale() throws IOException {
 		try {
 			bean.orderSpeculativeSale(wallet, orderCompanyCode,  orderNumber, compte);
@@ -78,6 +107,11 @@ public class WalletController implements Serializable {
 		}		
 	} 
 	
+	/**
+	 * Retourne le montant total des obligations d'achat.
+	 * @return
+	 * 	Le montant total des obligations d'achat
+	 */
 	public double getObligationsTotal() {
 		double total = 0;
 		for (Speculation s : wallet.getSpeculations()) {

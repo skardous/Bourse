@@ -24,12 +24,26 @@ import ejb.SEBean.SE;
 @Stateful
 public class CSVRequests {
 
+	/**
+	 * EJB réalisant les opérations CRUD d'une bourse.
+	 */
 	@EJB
 	SEService service;
-	
+
+	/**
+	 * EJB réalisant les opérations CRUD d'une société.
+	 */
 	@EJB
 	CompanyService compService;
-	
+
+	/**
+	 * Met à jour une bourse en base de données à partir de données collectées
+	 * en temps réél.
+	 * @param se
+	 * 	La bourse mis à jour
+	 * @throws MalformedURLException
+	 * @throws IOException
+	 */
 	public void updateSE(String se) throws MalformedURLException, IOException {
 		System.out.println("updateSE :"+se);
 		List<Societe> companyList = new ArrayList<Societe>();
@@ -44,13 +58,13 @@ public class CSVRequests {
 		System.setProperty("http.proxyPassword", authPassword);
 
 		Authenticator.setDefault(
-		  new Authenticator() {
-		    public PasswordAuthentication getPasswordAuthentication() {
-		      return new PasswordAuthentication(authUser, authPassword.toCharArray());
-		    }
-		  }
-		);
-		
+				new Authenticator() {
+					public PasswordAuthentication getPasswordAuthentication() {
+						return new PasswordAuthentication(authUser, authPassword.toCharArray());
+					}
+				}
+				);
+
 		InputStream input = new URL(
 				"http://www.nasdaq.com/screening/companies-by-industry.aspx?exchange="
 						+ se + "&render=download").openStream();
@@ -74,10 +88,14 @@ public class CSVRequests {
 		br.close();
 		b.setSocietes(companyList);
 		service.update(b);
-		
 		System.out.println("endUpdateSE");
 	}
-	
+
+	/**
+	 * Lance la mise à jour des bourses dans la base de données.
+	 * @throws MalformedURLException
+	 * @throws IOException
+	 */
 	public void updateDatabase() throws MalformedURLException, IOException{			
 		for (SE se : SE.values()) {
 			this.updateSE(se.name());

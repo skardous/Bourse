@@ -14,13 +14,22 @@ import ejb.ClientBean.ConfList;
 @Startup
 public class TimedTaskManager {
 
+	/**
+	 * EJB gérant la mise à jour des StockExchange en base de données.
+	 * */
 	@EJB
 	CSVRequests requests;
 
+	/**
+	 * EJB gérant les opérations CRUD d'une confiance.
+	 * */
 	@EJB
 	ConfianceService confianceService;
 
-	//TODO : trouver une solution pour "tuer" les tâches de requests quand l'URL n'est pas atteinte
+	/**
+	 * Programme la mise à jour des StockExchange dans la base de données
+	 * toutes les minutes.
+	 * */
 	@Schedule(second = "0", minute = "*/1", hour = "*")
 	public void updateDB() {
 		System.out.println("updatedb");
@@ -33,6 +42,9 @@ public class TimedTaskManager {
 		System.out.println("endUpdateDB");
 	}
 
+	/**
+	 * Initialise la base en créant les niveaux de confiance.
+	 */
 	@PostConstruct
 	public void initDB() {
 		for (ConfList confiance : ConfList.values()) {
@@ -42,14 +54,6 @@ public class TimedTaskManager {
 				confianceService.create(conf); 
 			}
 		}
-		// Confiance c = new Confiance(1, "normal");
-		// Confiance p = new Confiance(2, "privilegié");
-		// if (confianceService.find(1) == null) {
-		// confianceService.create(c);
-		// }
-		// if (confianceService.find(2) == null) {
-		// confianceService.create(p);
-		// }
 		System.out.println("initDB"); 
 	}
 

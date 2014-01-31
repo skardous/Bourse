@@ -33,10 +33,20 @@ public class AccountController implements Serializable {
 	@ManagedProperty(value = "#{sessionController.session.connectedUser.compte}")
 	private Compte compte;
 
+	/**
+	 * Le bean correspondant à un compte.
+	 */
 	@EJB
 	private AccountBean bean;
 
+	/**
+	 * La valeur du crédit.
+	 */
 	private Integer creditValue;
+	
+	/**
+	 * La valeur du débit.
+	 */
 	private Integer debitValue;
 
 	/**
@@ -73,11 +83,8 @@ public class AccountController implements Serializable {
 	 * @throws IOException
 	 */
 	public void clore() throws IOException {
-		System.out.println("cloture de compte...");
 		bean.clore(compte);
-		System.out.println("logout...");
 		session.logout();
-		System.out.println("redirection...");
 		FacesContext.getCurrentInstance().getExternalContext()
 		.redirect("/Bourse/index.xhtml");
 	}

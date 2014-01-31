@@ -9,10 +9,16 @@ public class Confiance implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * ID du niveau de confiance
+	 */
 	@Id
 	@GeneratedValue
 	private int id;
 
+	/**
+	 * L'intitulé du niveau de confiance
+	 */
 	private String intitule;
 
 	public Confiance(int i, String string) {

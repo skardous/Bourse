@@ -15,10 +15,19 @@ import util.NegativeSoldException;
  */
 @Entity(name = "Compte")
 public class Compte {
+	/**
+	 * ID du compte
+	 */
 	@Id
     @GeneratedValue
     private int id;
+	/**
+	 * Le solde du compte
+	 */
     private double solde;
+    /**
+     * Le statut du compte (ouvert ou fermé)
+     */
     private boolean open;
     
     public Compte() {

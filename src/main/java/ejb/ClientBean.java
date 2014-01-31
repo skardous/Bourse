@@ -20,12 +20,27 @@ public class ClientBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * Service permettant de réaliser des opérations CRUD
+	 * sur un client.
+	 */
 	@EJB
 	private ClientService clientService;
 
+	/**
+	 * Service permettant de réaliser des opérations CRUD
+	 * sur la confiance.
+	 */
 	@EJB
 	private ConfianceService confianceService;
 
+	/**
+	 * Créé un nouveau client si le login n'a pas déjà été pris.
+	 * @param client
+	 * 	Le client à ajouter à l'application.
+	 * @throws AlreadyTakenLoginException
+	 * 	Le login a déjà été pris.
+	 */
 	public void createClient(Client client) throws AlreadyTakenLoginException {
 		if (clientService.getClientsByLogin(client.getUsername()).isEmpty()) {
 			Compte c = new Compte();
@@ -40,10 +55,20 @@ public class ClientBean implements Serializable {
 		}
 	}
 	
+	/**
+	 * Met à jour le client spécifié.
+	 * @param selectedClient
+	 * 	Le client à mettre à jour.
+	 */
 	public void updateclient(Client selectedClient) {
 		clientService.update(selectedClient);		
 	}
 
+	/**
+	 * Retourne une liste de tous les clients de l'application.
+	 * @return
+	 * 	Une liste de clients
+	 */
 	@SuppressWarnings("unchecked")
 	public List<Client> getClientsList() {
 		List<Client> clientsList = new ArrayList<Client>();
@@ -51,10 +76,11 @@ public class ClientBean implements Serializable {
 		return clientsList;
 	}
 	
+	/**
+	 * L'ensemble des niveaux de confiance possibles.
+	 */
 	public enum ConfList {
-		normal, privilégié;
+		normal, privilegie;
 	}
-
-	
 
 }

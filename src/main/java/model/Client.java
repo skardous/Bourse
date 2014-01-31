@@ -12,17 +12,27 @@ import javax.persistence.*;
 				"FROM Client c " +
       			"WHERE c.username = :login")})
 public class Client extends Utilisateur implements Serializable {
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
 
 	public static final String findClientByLogin = "Client.findClientByLogin";
 
+	/**
+	 * Le prénom du client
+	 */
 	private String name;
+	/**
+	 * Le nom du client
+	 */
 	private String lastName;
+	/**
+	 * Le portefeuille du client
+	 */
 	@OneToOne(cascade=CascadeType.ALL)
 	private Portefeuille portefeuille;
+	/**
+	 * Le compte du client
+	 */
 	@OneToOne(cascade=CascadeType.ALL)
 	private Compte compte;
 	

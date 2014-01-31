@@ -8,25 +8,52 @@ import javax.persistence.ManyToOne;
 @Entity(name = "Historique")
 public class Historique {
 
+	/**
+	 * ID de l'historique
+	 */
 	@Id
 	@GeneratedValue
 	private int id;
 
+	/**
+	 * La société cible de l'historique
+	 */
 	@ManyToOne(targetEntity = model.Societe.class)
 	private Societe societe;
 
+	/**
+	 * La date de l'historique
+	 */
 	private String date;
 
+	/**
+	 * Valeur à l'ouverture
+	 */
 	private String ouverture;
 
+	/**
+	 * Valeur au plus bas
+	 */
 	private String plus_bas;
 
+	/**
+	 * Valeur au plus haut
+	 */
 	private String plus_haut;
 
+	/**
+	 * Valeur à la fermeture
+	 */
 	private String fermeture;
 
+	/**
+	 * Le volume des actions
+	 */
 	private String volume;
 
+	/**
+	 * 
+	 */
 	private String adj_fermeture;
 
 	public Historique() {

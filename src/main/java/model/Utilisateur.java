@@ -21,11 +21,20 @@ public class Utilisateur implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * ID de l'utilisateur
+	 */
 	@Id
 	@GeneratedValue
 	protected Integer id;
 
+	/**
+	 * Login de l'utilisateur
+	 */
 	protected String username;
+	/**
+	 * Mot de passe de l'utilisateur
+	 */
 	protected String password;
 	
 	public final static String findForLogin = "Utilisateur.findforlogin";

@@ -25,6 +25,9 @@ public class ClientController implements Serializable  {
 
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * Le bean du client.
+	 */
 	@EJB
 	private ClientBean clientBean;
 
@@ -53,6 +56,9 @@ public class ClientController implements Serializable  {
 	 */
 	private Map<String, String> listConfiance = new HashMap<String, String>();
 
+	/**
+	 * Initialisation de la liste des niveaux de confiance.
+	 */
 	public ClientController() {
 		for (ConfList se : ConfList.values()) {
 			listConfiance.put(se.name(), se.name());

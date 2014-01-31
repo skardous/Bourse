@@ -16,6 +16,13 @@ public class SEService extends DataAccessService<Bourse>{
         super(Bourse.class);
     }   
     
+    /**
+     * Retourne une bourse selon son nom
+     * @param name
+     * 	Le nom de la bourse recherchée
+     * @return
+     * 	Une bourse
+     */
     @SuppressWarnings("unchecked")
 	public Bourse getSEByName(String name) {
     	Map<String, Object> parameters = new HashMap<String, Object>();
@@ -27,6 +34,13 @@ public class SEService extends DataAccessService<Bourse>{
     	return list.get(0);    	    
     }
 
+    /**
+     * Retourne une liste de sociétés selon le nom d'une bourse
+     * @param se
+     * 	Le nom de la bourse
+     * @return
+     * 	La liste de sociétés trouvée
+     */
 	public List<Societe> getCompaniesBySE(String se) {
 		Map<String, Object> parameters = new HashMap<String, Object>();
     	parameters.put("name", se);

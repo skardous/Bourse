@@ -10,20 +10,38 @@ import util.NegativeActionNumberException;
 @Entity
 public class Action {
 
+	/**
+	 * ID d'une action
+	 */
 	@Id
 	@GeneratedValue
 	private int id;
 	
+	/**
+	 * La société qui détient l'action
+	 */
 	@ManyToOne
 	private Societe societe;
 
+	/**
+	 * Le portefeuille dans lequel se trouve l'action
+	 */
 	@ManyToOne
 	private Portefeuille portefeuille;
 
+	/**
+	 * Le nombre d'actions
+	 */
 	private int number;
 	
+	/**
+	 * La valeur d'achat
+	 */
 	private double valeurAchat; 
 
+	/**
+	 * Les gains potentiels en vendant l'action
+	 */
 	private String gains; 
 
 	public Action() {

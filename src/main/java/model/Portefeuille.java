@@ -12,13 +12,22 @@ import javax.persistence.OneToMany;
 
 @Entity
 public class Portefeuille {
+	/**
+	 * ID du portefeuille
+	 */
     @Id
     @GeneratedValue
     private int id;
     
+    /**
+     * La liste d'actions du portefeuille
+     */
     @OneToMany(mappedBy="portefeuille") 
     private List<Action> actions;
     
+    /**
+     * La liste des spéculations du portefeuille
+     */
     @OneToMany(mappedBy="portefeuille")
     private List<Speculation> speculations;
     
@@ -30,8 +39,10 @@ public class Portefeuille {
     }
     
     /**
+     * Retourne la valeur total du portefeuille
      * @throws NumberFormatException si le cours de la société est "n/a"
      * @return
+     * 	La valeur total du portefeuille
      */
     public float getValeur() {
     	float value = 0;

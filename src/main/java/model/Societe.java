@@ -16,22 +16,43 @@ public class Societe {
 
 	public final static String findByCode = "Societe.findbycode";
 
+	/**
+	 * Le code de la société
+	 */
 	@Id
 	private String code;
 
+	/**
+	 * Le nom de la société
+	 */
 	private String nom;
 
+	/**
+	 * La valeur de la société
+	 */
 	private String valeur;
 
+	/**
+	 * L'ensemble des historiques de la société
+	 */
 	@OneToMany(targetEntity = model.Historique.class)
 	private List<Historique> historique;
 
+	/**
+	 * L'ensemble des actions de la société
+	 */
 	@OneToMany(mappedBy = "societe")
 	private List<Action> actions;
 	
+	/**
+	 * L'ensemble des spéculations de la société
+	 */
 	@OneToMany(mappedBy = "societe")
 	private List<Speculation> speculations;
 
+	/**
+	 * La bourse dans laquelle se trouve la société
+	 */
 	@ManyToOne
 	private Bourse bourse;
 

@@ -31,24 +31,30 @@ public class StockExController implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * Le bean d'une bourse.
+	 */
 	@EJB
 	private SEBean bean;
 
 	/**
-	 * Le StockExchange sélectionné.
+	 * La bourse sélectionnée.
 	 */
 	private String selectedSE;
 
 	/**
-	 * La liste de tous les StockExchange.
+	 * La liste de toutes les bourses.
 	 */
 	private Map<String, String> listSE = new HashMap<String, String>();
 
 	/**
-	 * La liste des sociétés à partir d'un StockExchange.
+	 * La liste des sociétés à partir d'une bourse.
 	 */
 	private List<Societe> companyList = new ArrayList<Societe>();
 	
+	/**
+	 * La liste filtrée des sociétés.
+	 */
 	private List<Societe> filteredCompanies;  
 
 	/**
@@ -61,6 +67,9 @@ public class StockExController implements Serializable {
 	 */
 	private List<Historique> selectedHistorique = new ArrayList<Historique>();
 
+	/**
+	 * Initialisation de la liste des bourses
+	 */
 	public StockExController() {
 		for (SE se : SE.values()) {
 			listSE.put(se.name(), se.name());
@@ -68,7 +77,7 @@ public class StockExController implements Serializable {
 	}
 
 	/**
-	 * Met à jour la liste des sociétés selon le StockExchange sélectionné.
+	 * Met à jour la liste des sociétés selon la bourse sélectionnée.
 	 * @throws MalformedURLException
 	 * @throws IOException
 	 */
@@ -76,7 +85,6 @@ public class StockExController implements Serializable {
 		companyList.clear();
 		companyList = bean.getCompaniesBySE(selectedSE);
 		filteredCompanies = bean.getCompaniesBySE(selectedSE);
-		//companyList = requester.getCompaniesBySE(selectedSE);
 	}
 
 	/**

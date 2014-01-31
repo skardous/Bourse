@@ -14,6 +14,9 @@ import ejb.AdminBean;
 @ViewScoped
 public class AdminController  {
 
+	/**
+	 * Le bean correspondant à l'administrateur.
+	 */
 	@EJB
 	private AdminBean adminBean;
 	private Administrateur admin = new Administrateur();

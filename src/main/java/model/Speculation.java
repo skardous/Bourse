@@ -8,18 +8,33 @@ import javax.persistence.ManyToOne;
 @Entity
 public class Speculation {
 
+	/**
+	 * ID de la spéculation
+	 */
 	@Id
 	@GeneratedValue
 	private int id;
 	
+	/**
+	 * La société cible de la spéculation
+	 */
 	@ManyToOne
 	private Societe societe;
 
+	/**
+	 * Le portefeuille dans lequel se trouve la spéculation
+	 */
 	@ManyToOne
 	private Portefeuille portefeuille;
 	
+	/**
+	 * La valeur à la vente de la spéculation
+	 */
 	private double valeurVente;
 
+	/**
+	 * Le nombre de spéculations
+	 */
 	private int number;
 
 	public Speculation() {

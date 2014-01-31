@@ -18,6 +18,13 @@ public class CompanyService extends DataAccessService<Portefeuille>{
         super(Portefeuille.class);
     }
     
+    /**
+     * Retourne une société selon son code.
+     * @param code
+     * 	Le code de la société
+     * @return
+     * 	La société trouvée
+     */
     @SuppressWarnings("unchecked")
 	public Societe findCompanyByCode(String code) {
     	Map<String, Object> parameters = new HashMap<String, Object>();

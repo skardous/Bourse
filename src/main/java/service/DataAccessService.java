@@ -10,11 +10,9 @@ import javax.persistence.Query;
 
 import model.Client;
 
-
 /**
  * Classe générique permettant de réaliser les opérations CRUD simple pour n'importe
  * quelle entité
- * @author Simon KARDOUS
  *
  * @param <T>
  */
@@ -36,6 +34,7 @@ public abstract class DataAccessService<T> {
      * Stocke une instance en base
      * @param T Object
      * @return 
+     * 	Retourne l'instance persistée
      */
     public T create(T t) {
         this.em.persist(t);
@@ -49,6 +48,7 @@ public abstract class DataAccessService<T> {
      * @param T Object
      * @param id
      * @return 
+     * 	Retourne l'instance récupérée
      */
     public T find(Object id) {
         return this.em.find(this.type, id);

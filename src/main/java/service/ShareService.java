@@ -11,5 +11,4 @@ public class ShareService extends DataAccessService<Action>{
         super(Action.class);
     }   
     
-    
 }
